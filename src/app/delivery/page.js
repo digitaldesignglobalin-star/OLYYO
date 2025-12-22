@@ -910,7 +910,7 @@ Contact: +1-800-OLYYO-123`;
 
             <p className="mt-1 text-xs">
             ❤️Proudly developed by{" "}
-            <Link href="https://designglobal.in/">
+            <Link href="https://designglobal.in/" target="_blank">
               Design Global Technology
             </Link>
           </p>

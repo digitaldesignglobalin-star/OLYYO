@@ -53,6 +53,8 @@ import {
   Heart,
   MessageCircle,
   IndianRupee,
+  House,
+  Home,
 } from "lucide-react";
 import Link from "next/link";
 
@@ -107,7 +109,7 @@ function RestaurantSidebar({
       {/* Mobile Menu Button */}
       <button
         onClick={() => setIsMobileOpen(true)}
-        className="lg:hidden fixed top-4 left-4 z-50 p-2 bg-gray-800 border border-gray-700 rounded-lg shadow-lg"
+        className="lg:hidden fixed top-5 left-6 z-50 p-2 bg-gradient-to-r from-gray-800 to-gray-900 border border-gray-700 rounded-lg shadow-lg"
       >
         <Menu className="w-6 h-6 text-white" />
       </button>
@@ -121,9 +123,10 @@ function RestaurantSidebar({
       `}
       >
         {/* Logo */}
-        
-        <Link href="/" className="h-20 border-b border-gray-800 flex items-center px-6">
-          <div className="flex items-center space-x-3">
+
+        <div className="h-20 border-b border-gray-800 flex items-center px-6 justify-between">
+          {/* Desktop / Tablet Logo */}
+          <Link href="/" className="hidden lg:flex items-center space-x-3">
             <div className="w-10 h-10 bg-gradient-to-r from-orange-500 to-red-500 rounded-lg flex items-center justify-center">
               <ChefHat className="w-6 h-6 text-white" />
             </div>
@@ -131,8 +134,16 @@ function RestaurantSidebar({
               <h1 className="text-xl font-bold text-white">Pizza Palace</h1>
               <p className="text-xs text-gray-500">Restaurant Panel</p>
             </div>
-          </div>
-        </Link>
+          </Link>
+
+          {/* Mobile Home Icon */}
+          <Link
+            href="/"
+            className="lg:hidden absolute top-6 left-50 flex items-center justify-center w-10 h-10 rounded-lg bg-gray-800 hover:bg-gray-700"
+          >
+            <Home className="w-5 h-5 text-white" />
+          </Link>
+        </div>
 
         {/* Menu */}
         <div className="h-[calc(100vh-160px)] overflow-y-auto py-4">
@@ -203,7 +214,7 @@ function RestaurantSidebar({
         {/* Close button for mobile */}
         <button
           onClick={() => setIsMobileOpen(false)}
-          className="lg:hidden absolute top-4 right-4 p-2"
+          className="lg:hidden absolute top-6 -right-17 p-2 bg-black hover:bg-gray-800 rounded-lg"
         >
           <X className="w-5 h-5" />
         </button>
@@ -213,7 +224,7 @@ function RestaurantSidebar({
       {isMobileOpen && (
         <div
           onClick={() => setIsMobileOpen(false)}
-          className="lg:hidden fixed inset-0 bg-black/50 z-30"
+          className="lg:hidden fixed inset-0 bg-black/70 backdrop-blur-sm z-30"
         />
       )}
     </>
@@ -520,110 +531,110 @@ function RecentOrders() {
       <div className="space-y-4">
         {orders.map((order) => (
           <div
-  key={order.id}
-  className="
-    flex items-start gap-4
-    md:items-center
-    p-4 rounded-lg
+            key={order.id}
+            className="
+    flex flex-col gap-3
+    p-3 sm:p-4
+    rounded-xl
     bg-gray-800/30 hover:bg-gray-800/50
     transition-colors
+    w-full max-w-full overflow-hidden
   "
->
-  {/* LEFT SECTION */}
-  <div className="flex gap-3 flex-1 min-w-0">
-    {/* Icon */}
-    <div
-      className={`w-10 h-10 shrink-0 rounded-lg flex items-center justify-center ${
-        order.status === 'preparing'
-          ? 'bg-yellow-500/20'
-          : order.status === 'ready'
-          ? 'bg-green-500/20'
-          : 'bg-blue-500/20'
-      }`}
-    >
-      <ShoppingBag
-        className={`w-5 h-5 ${
-          order.status === 'preparing'
-            ? 'text-yellow-400'
-            : order.status === 'ready'
-            ? 'text-green-400'
-            : 'text-blue-400'
-        }`}
-      />
-    </div>
+          >
+            {/* LEFT SECTION */}
+            <div className="flex gap-3 items-start flex-1 min-w-0">
+              {/* Icon */}
+              <div
+                className={`w-10 h-10 shrink-0 rounded-lg flex items-center justify-center ${
+                  order.status === "preparing"
+                    ? "bg-yellow-500/20"
+                    : order.status === "ready"
+                    ? "bg-green-500/20"
+                    : "bg-blue-500/20"
+                }`}
+              >
+                <ShoppingBag
+                  className={`w-5 h-5 ${
+                    order.status === "preparing"
+                      ? "text-yellow-400"
+                      : order.status === "ready"
+                      ? "text-green-400"
+                      : "text-blue-400"
+                  }`}
+                />
+              </div>
 
-    {/* Text */}
-    <div className="min-w-0">
-      <div className="flex flex-wrap items-center gap-2">
-        <h4 className="text-sm font-medium text-white shrink-0">
-          {order.id}
-        </h4>
-        <span className="text-xs text-gray-500">•</span>
-        <span className="text-sm text-gray-300 truncate">
-          {order.customer}
-        </span>
-      </div>
+              {/* Text */}
+              <div className="min-w-0">
+                <div className="flex flex-wrap items-center gap-2">
+                  <h4 className="text-sm font-semibold text-white">
+                    {order.id}
+                  </h4>
+                  <span className="text-xs text-gray-500">•</span>
+                  <span className="text-sm text-gray-300 truncate">
+                    {order.customer}
+                  </span>
+                </div>
 
-      <p className="text-sm text-gray-400 mt-1 truncate">
-        {order.items}
-      </p>
-    </div>
-  </div>
+                <p className="text-sm text-gray-400 mt-1 truncate">
+                  {order.items}
+                </p>
+              </div>
+            </div>
 
-  {/* RIGHT SECTION */}
-  <div className="flex flex-col md:flex-row md:items-center gap-2 shrink-0 ml-auto">
-    {/* Time */}
-    <div className="text-xs text-gray-500 flex items-center justify-end">
-      <Clock className="w-3 h-3 mr-1" />
-      {order.time}
-    </div>
+            {/* RIGHT SECTION */}
+            <div className="flex flex-col gap-2 md:items-end">
+              {/* Time */}
+              <div className="text-xs text-gray-500 flex items-center">
+                <Clock className="w-3 h-3 mr-1" />
+                {order.time}
+              </div>
 
-    {/* Status */}
-    <span
-      className={`px-3 py-1.5 text-xs rounded-full whitespace-nowrap ${statusColors[order.status]}`}
-    >
-      {order.status.charAt(0).toUpperCase() + order.status.slice(1)}
-    </span>
+              {/* Status */}
+              <span
+                className={`px-3 py-1 text-xs rounded-full w-fit ${
+                  statusColors[order.status]
+                }`}
+              >
+                {order.status.charAt(0).toUpperCase() + order.status.slice(1)}
+              </span>
 
-    {/* Actions */}
-    {order.status === 'preparing' && (
-      <button
-        onClick={() => handleMarkReady(order.id)}
-        className="
+              {/* Actions */}
+              {order.status === "preparing" && (
+                <button
+                  onClick={() => handleMarkReady(order.id)}
+                  className="
           w-full md:w-auto
           px-4 py-2 text-xs
           bg-gradient-to-r from-green-500 to-emerald-500
           text-white rounded-lg
           hover:opacity-90
           flex items-center justify-center
-          whitespace-nowrap
         "
-      >
-        <Check className="w-3 h-3 mr-1" />
-        Mark Ready
-      </button>
-    )}
+                >
+                  <Check className="w-3 h-3 mr-1" />
+                  Mark Ready
+                </button>
+              )}
 
-    {order.status === 'ready' && (
-      <button
-        onClick={() => handleMarkDelivered(order.id)}
-        className="
+              {order.status === "ready" && (
+                <button
+                  onClick={() => handleMarkDelivered(order.id)}
+                  className="
           w-full md:w-auto
           px-4 py-2 text-xs
           bg-gradient-to-r from-blue-500 to-cyan-500
           text-white rounded-lg
           hover:opacity-90
           flex items-center justify-center
-          whitespace-nowrap
         "
-      >
-        <Truck className="w-3 h-3 mr-1" />
-        Mark Delivered
-      </button>
-    )}
-  </div>
-</div>
-
+                >
+                  <Truck className="w-3 h-3 mr-1" />
+                  Mark Delivered
+                </button>
+              )}
+            </div>
+          </div>
         ))}
       </div>
     </div>
@@ -1005,7 +1016,7 @@ function Complaints() {
   };
 
   return (
-    <div className="bg-gray-900 border border-gray-800 rounded-2xl p-6">
+    <div className="bg-gray-900 border border-gray-800 rounded-2xl p-6 w-full max-w-full overflow-hidden">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6 gap-4">
         <div>
           <h3 className="text-lg font-bold text-white">Customer Complaints</h3>
@@ -1026,112 +1037,116 @@ function Complaints() {
         </div> */}
       </div>
 
-      <div className="overflow-x-auto">
-        <table className="w-full">
-          <thead>
-            <tr className="text-left text-xs text-gray-400 border-b border-gray-800">
-              <th className="pb-3 px-4">Customer & Order</th>
-              <th className="pb-3 px-4">Complaint Type</th>
-              <th className="pb-3 px-4">Description</th>
-              <th className="pb-3 px-4">Priority</th>
-              <th className="pb-3 px-4">Status</th>
-              <th className="pb-3 px-4">Actions</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-gray-800">
-            {complaints.map((complaint) => (
-              <tr
-                key={complaint.id}
-                className="hover:bg-gray-800/30 transition-colors"
-              >
-                <td className="py-4 px-4">
-                  <div>
-                    <div className="font-medium text-white">
-                      {complaint.customer}
-                    </div>
-                    <div className="text-xs text-gray-400">
-                      Order {complaint.order}
-                    </div>
-                    <div className="text-xs text-gray-500 mt-1 flex items-center">
-                      <Clock className="w-3 h-3 mr-1" />
-                      {complaint.date}
-                    </div>
-                  </div>
-                </td>
-                <td className="py-4 px-4">
-                  <div className="text-sm text-white">{complaint.type}</div>
-                </td>
-                <td className="py-4 px-4">
-                  <div className="text-sm text-gray-300 max-w-xs">
-                    {complaint.description}
-                  </div>
-                  <div className="text-xs text-gray-500 mt-1 flex items-center">
-                    <Phone className="w-3 h-3 mr-1" />
-                    {complaint.contact}
-                  </div>
-                </td>
-                <td className="py-4 px-4">
-                  <span
-                    className={`px-3 py-1 text-xs rounded-full ${
-                      priorityColors[complaint.priority]
-                    }`}
+      <div className="relative -mx-4 sm:-mx-6">
+        <div className="w-full overflow-x-auto">
+          <div className="min-w-[1000px] px-4 sm:px-6">
+            <table className="w-full whitespace-nowrap">
+              <thead>
+                <tr className="text-left text-xs text-gray-400 border-b border-gray-800">
+                  <th className="pb-3 px-4">Customer & Order</th>
+                  <th className="pb-3 px-4">Complaint Type</th>
+                  <th className="pb-3 px-4">Description</th>
+                  <th className="pb-3 px-4">Priority</th>
+                  <th className="pb-3 px-4">Status</th>
+                  <th className="pb-3 px-4">Actions</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-gray-800">
+                {complaints.map((complaint) => (
+                  <tr
+                    key={complaint.id}
+                    className="hover:bg-gray-800/30 transition-colors"
                   >
-                    {complaint.priority.charAt(0).toUpperCase() +
-                      complaint.priority.slice(1)}
-                  </span>
-                </td>
-                <td className="py-4 px-4">
-                  <span
-                    className={`px-3 py-1 text-xs rounded-full ${
-                      statusColors[complaint.status]
-                    }`}
-                  >
-                    {complaint.status
-                      .replace("_", " ")
-                      .replace(/\b\w/g, (l) => l.toUpperCase())}
-                  </span>
-                </td>
-                <td className="py-4 px-4">
-                  <div className="flex items-center space-x-2">
-                    {complaint.status === "pending" && (
-                      <>
-                        <button
-                          onClick={() =>
-                            handleStatusUpdate(complaint.id, "in_progress")
-                          }
-                          className="px-3 py-1 text-xs bg-blue-500/20 text-blue-400 rounded hover:bg-blue-500/30"
-                        >
-                          Start
-                        </button>
-                        <button
-                          onClick={() =>
-                            handleStatusUpdate(complaint.id, "resolved")
-                          }
-                          className="px-3 py-1 text-xs bg-green-500/20 text-green-400 rounded hover:bg-green-500/30"
-                        >
-                          Resolve
-                        </button>
-                      </>
-                    )}
-                    {complaint.status === "in_progress" && (
-                      <button
-                        onClick={() =>
-                          handleStatusUpdate(complaint.id, "resolved")
-                        }
-                        className="px-3 py-1 text-xs bg-green-500/20 text-green-400 rounded hover:bg-green-500/30"
+                    <td className="py-4 px-4">
+                      <div>
+                        <div className="font-medium text-white">
+                          {complaint.customer}
+                        </div>
+                        <div className="text-xs text-gray-400">
+                          Order {complaint.order}
+                        </div>
+                        <div className="text-xs text-gray-500 mt-1 flex items-center">
+                          <Clock className="w-3 h-3 mr-1" />
+                          {complaint.date}
+                        </div>
+                      </div>
+                    </td>
+                    <td className="py-4 px-4">
+                      <div className="text-sm text-white">{complaint.type}</div>
+                    </td>
+                    <td className="py-4 px-4">
+                      <div className="text-sm text-gray-300 max-w-xs break-words">
+                        {complaint.description}
+                      </div>
+                      <div className="text-xs text-gray-500 mt-1 flex items-center">
+                        <Phone className="w-3 h-3 mr-1" />
+                        {complaint.contact}
+                      </div>
+                    </td>
+                    <td className="py-4 px-4">
+                      <span
+                        className={`px-3 py-1 text-xs rounded-full ${
+                          priorityColors[complaint.priority]
+                        }`}
                       >
-                        Mark Resolved
-                      </button>
-                    )}
-                    <button className="p-1 hover:bg-gray-700 rounded">
-                      <MoreVertical className="w-4 h-4 text-gray-400" />
-                    </button>
-                  </div>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+                        {complaint.priority.charAt(0).toUpperCase() +
+                          complaint.priority.slice(1)}
+                      </span>
+                    </td>
+                    <td className="py-4 px-4">
+                      <span
+                        className={`px-3 py-1 text-xs rounded-full ${
+                          statusColors[complaint.status]
+                        }`}
+                      >
+                        {complaint.status
+                          .replace("_", " ")
+                          .replace(/\b\w/g, (l) => l.toUpperCase())}
+                      </span>
+                    </td>
+                    <td className="py-4 px-4">
+                      <div className="flex items-center space-x-2">
+                        {complaint.status === "pending" && (
+                          <>
+                            <button
+                              onClick={() =>
+                                handleStatusUpdate(complaint.id, "in_progress")
+                              }
+                              className="px-3 py-1 text-xs bg-blue-500/20 text-blue-400 rounded hover:bg-blue-500/30"
+                            >
+                              Start
+                            </button>
+                            <button
+                              onClick={() =>
+                                handleStatusUpdate(complaint.id, "resolved")
+                              }
+                              className="px-3 py-1 text-xs bg-green-500/20 text-green-400 rounded hover:bg-green-500/30"
+                            >
+                              Resolve
+                            </button>
+                          </>
+                        )}
+                        {complaint.status === "in_progress" && (
+                          <button
+                            onClick={() =>
+                              handleStatusUpdate(complaint.id, "resolved")
+                            }
+                            className="px-3 py-1 text-xs bg-green-500/20 text-green-400 rounded hover:bg-green-500/30"
+                          >
+                            Mark Resolved
+                          </button>
+                        )}
+                        <button className="p-1 hover:bg-gray-700 rounded">
+                          <MoreVertical className="w-4 h-4 text-gray-400" />
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div>
 
       {/* Stats Summary */}
@@ -1241,7 +1256,7 @@ function CustomerFeedback() {
 
   return (
     <div className="bg-gray-900 border border-gray-800 rounded-2xl p-6">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6 gap-4">
+      <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-6">
         <div>
           <h3 className="text-lg font-bold text-white">Customer Feedback</h3>
           <p className="text-gray-400 text-sm">
@@ -1273,12 +1288,12 @@ function CustomerFeedback() {
           </div>
 
           {/* Filter Buttons */}
-          <div className="flex space-x-1">
+          <div className="flex space-x-1 flex-wrap">
             {["all", "positive", "negative", "neutral"].map((type) => (
               <button
                 key={type}
                 onClick={() => setFilter(type)}
-                className={`px-3 py-1 text-xs rounded-full ${
+                className={`my-1 px-3 py-1 text-xs rounded-full ${
                   filter === type
                     ? type === "positive"
                       ? "bg-green-500/20 text-green-400"
@@ -1520,10 +1535,10 @@ export default function RestaurantDashboard() {
                   Customer Complaints
                 </h2>
                 <div className="flex items-center space-x-2">
-                  <button className="flex items-center bg-gradient-to-r from-orange-500 to-red-500 text-white px-4 py-2 rounded-lg hover:opacity-90">
+                  {/* <button className="flex items-center bg-gradient-to-r from-orange-500 to-red-500 text-white px-4 py-2 rounded-lg hover:opacity-90">
                     <AlertTriangle className="w-4 h-4 mr-2" />
                     Report Issue
-                  </button>
+                  </button> */}
                 </div>
               </div>
               <p className="text-gray-400">
@@ -1575,11 +1590,11 @@ export default function RestaurantDashboard() {
         setIsMobileOpen={setIsMobileOpen}
       />
 
-      <div className="flex-1 lg:ml-64">
+      <div className="flex-1 lg:ml-64 min-w-0 overflow-hidden">
         {/* Header */}
         <header className="sticky top-0 z-30 bg-gray-900 border-b border-gray-800 p-5">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-            <div>
+            <div className="mb-4 lg:mb-0 ml-auto lg:ml-0 text-right lg:text-left">
               <h2 className="text-2xl font-bold text-white capitalize">
                 {activeTab === "dashboard"
                   ? "Restaurant Dashboard"
@@ -1653,11 +1668,11 @@ export default function RestaurantDashboard() {
           </p> */}
 
           <p className="mt-1 text-xs">
-                      ❤️Proudly developed by{" "}
-                      <Link href="https://designglobal.in/">
-                        Design Global Technology
-                      </Link>
-                    </p>
+            ❤️Proudly developed by{" "}
+            <Link href="https://designglobal.in/" target="_blank">
+              Design Global Technology
+            </Link>
+          </p>
         </footer>
       </div>
 

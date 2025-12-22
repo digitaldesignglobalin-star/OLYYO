@@ -71,6 +71,7 @@ import {
   ChevronRight,
   IndianRupee,
   Heart,
+  Home,
 } from "lucide-react";
 import Link from "next/link";
 
@@ -137,7 +138,7 @@ function AdminSidebar({
       {/* Mobile Menu Button */}
       <button
         onClick={() => setIsMobileOpen(true)}
-        className="lg:hidden fixed top-6 left-6 z-50 p-2 bg-gradient-to-r from-gray-800 to-gray-900 border border-gray-700 rounded-lg shadow-lg"
+        className="lg:hidden fixed top-7 left-7 z-50 p-2 bg-gradient-to-r from-gray-800 to-gray-900 border border-gray-700 rounded-lg shadow-lg"
       >
         <Menu className="w-6 h-6 text-white" />
       </button>
@@ -151,7 +152,7 @@ function AdminSidebar({
       `}
       >
         {/* Logo with glow effect */}
-        <div className="p-6 border-b border-gray-800 relative overflow-hidden">
+        {/* <div className="p-6 border-b border-gray-800 relative overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-r from-orange-500/5 to-red-500/5"></div>
           <Link
             href="/"
@@ -171,7 +172,31 @@ function AdminSidebar({
               <p className="text-xs text-gray-400">Control Panel v2.0</p>
             </div>
           </Link>
+        </div> */}
+
+
+        <div className="h-20 border-b border-gray-800 flex items-center px-6 justify-between">
+          {/* Desktop / Tablet Logo */}
+          <Link href="/" className="hidden lg:flex items-center space-x-3">
+            <div className="w-10 h-10 bg-gradient-to-r from-orange-500 to-red-500 rounded-lg flex items-center justify-center">
+              <Shield className="w-6 h-6 text-white" />
+            </div>
+            <div>
+              <h1 className="text-xl font-bold text-white">OLYYO Admin</h1>
+              <p className="text-xs text-gray-500">Control Panel v2.0</p>
+            </div>
+          </Link>
+
+          {/* Mobile Home Icon */}
+          <Link
+            href="/"
+            className="lg:hidden absolute top-7 left-50 flex items-center justify-center w-10 h-10 rounded-lg bg-gray-800 hover:bg-gray-700"
+          >
+            <Home className="w-5 h-5 text-white" />
+          </Link>
         </div>
+
+
 
         {/* Menu with hover effects */}
         <div className="p-4 space-y-2 overflow-y-auto h-[calc(100vh-120px)]">
@@ -278,7 +303,7 @@ function AdminSidebar({
         {/* Close button for mobile */}
         <button
           onClick={() => setIsMobileOpen(false)}
-          className="lg:hidden absolute top-4 right-4 p-2 hover:bg-gray-800 rounded-lg"
+          className="lg:hidden absolute top-7 -right-17 p-2 bg-black hover:bg-gray-800 rounded-lg"
         >
           <X className="w-5 h-5" />
         </button>
@@ -2107,7 +2132,7 @@ export default function AdminDashboard() {
             backdrop-blur-lg border-b border-gray-800 p-3  shadow-2xl"
         >
           <div className="max-w-[1600px] mx-auto flex flex-col lg:flex-row lg:items-center justify-between">
-            <div className="mb-4 lg:mb-0">
+            <div className="mb-4 lg:mb-0 ml-auto lg:ml-0 text-right lg:text-left">
               <h2 className="text-2xl lg:text-3xl font-bold text-white capitalize">
                 {activeTab === "dashboard"
                   ? "Dashboard"
@@ -2525,7 +2550,7 @@ export default function AdminDashboard() {
 
           <p className="mt-1 text-xs">
             ❤️Proudly developed by{" "}
-            <Link href="https://designglobal.in/">
+            <Link href="https://designglobal.in/" target="_blank">
               Design Global Technology
             </Link>
           </p>
