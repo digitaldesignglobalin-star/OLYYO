@@ -57,6 +57,7 @@ import {
   Sandwich,
   CakeSlice,
 } from "lucide-react";
+import Link from "next/link";
 
 // Mock data for restaurants
 const restaurants = [
@@ -1034,6 +1035,13 @@ export default function CustomerPage() {
           
           <div className="mt-8 pt-8 border-t border-gray-800 text-center text-gray-500 text-sm">
             <p>© {new Date().getFullYear()} OLYYO Food. All rights reserved.</p>
+
+            <p className="mt-1 text-xs">
+            ❤️Proudly developed by{" "}
+            <Link href="https://designglobal.in/">
+              Design Global Technology
+            </Link>
+          </p>
           </div>
         </div>
       </footer>

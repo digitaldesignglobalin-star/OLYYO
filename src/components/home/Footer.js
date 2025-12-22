@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { Facebook, Twitter, Instagram, Mail, Phone, MapPin, Heart } from 'lucide-react';
+import Link from 'next/link';
 
 export default function Footer() {
   const [email, setEmail] = useState('');
@@ -147,10 +148,14 @@ export default function Footer() {
         <div className="border-t border-gray-800 mt-8 pt-6 text-center text-gray-500 animate-slide-up" 
              style={{animationDelay: '0.5s'}}>
           <p className="flex items-center justify-center">
-            © 2024 OLYYO.COM. All rights reserved. Made with
-            <Heart className="w-4 h-4 mx-1 text-red-500 fill-red-500 animate-pulse-slow" />
-            by OLYYO Team
+            © 2024 OLYYO.COM. All rights reserved. 
           </p>
+          <p className="mt-1 text-xs">
+                      ❤️Proudly developed by{" "}
+                      <Link href="https://designglobal.in/">
+                        Design Global Technology
+                      </Link>
+                    </p>
         </div>
       </div>
     </footer>

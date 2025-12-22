@@ -11,8 +11,10 @@ import {
   Menu,
   X,
   Home,
+  ChevronRight,
 } from "lucide-react";
 import Image from "next/image";
+// import olyyoLogo from "public/"
 import logoImage from "../../../public/olyyo-logo.png";
 
 export default function Navbar() {
@@ -283,7 +285,7 @@ export default function Navbar() {
       
       {/* Global Loading Overlay */}
       {isNavigating && (
-        <div className="fixed inset-0 bg-black/10 backdrop-blur-sm z-40 md:hidden"></div>
+        <div className="fixed inset-0 bg-black/10 backdrop-blur-sm z-40 md:hidden pointer-events-none"></div>
       )}
     </header>
   );

@@ -54,6 +54,7 @@ import {
   MessageCircle,
   IndianRupee,
 } from "lucide-react";
+import Link from "next/link";
 
 // Restaurant Sidebar Component
 function RestaurantSidebar({
@@ -120,7 +121,8 @@ function RestaurantSidebar({
       `}
       >
         {/* Logo */}
-        <div className="h-20 border-b border-gray-800 flex items-center px-6">
+        
+        <Link href="/" className="h-20 border-b border-gray-800 flex items-center px-6">
           <div className="flex items-center space-x-3">
             <div className="w-10 h-10 bg-gradient-to-r from-orange-500 to-red-500 rounded-lg flex items-center justify-center">
               <ChefHat className="w-6 h-6 text-white" />
@@ -130,7 +132,7 @@ function RestaurantSidebar({
               <p className="text-xs text-gray-500">Restaurant Panel</p>
             </div>
           </div>
-        </div>
+        </Link>
 
         {/* Menu */}
         <div className="h-[calc(100vh-160px)] overflow-y-auto py-4">
@@ -192,9 +194,9 @@ function RestaurantSidebar({
               </p>
               <p className="text-xs text-gray-500 truncate">pizza@olyyo.com</p>
             </div>
-            <button className="p-2 hover:bg-gray-800 rounded-lg">
+            <Link href="/" className="p-2 hover:bg-gray-800 rounded-lg">
               <LogOut className="w-5 h-5 text-gray-400" />
-            </button>
+            </Link>
           </div>
         </div>
 
@@ -1641,18 +1643,21 @@ export default function RestaurantDashboard() {
         <main className="p-5">{renderContent()}</main>
 
         {/* Footer */}
-        <footer className="p-6 border-t border-gray-800 text-center">
-          <p className="text-sm text-gray-500">
-            © {new Date().getFullYear()} Pizza Palace Restaurant Panel. Powered
-            by OLYYO.
+        <footer className="p-6 border-t border-gray-800 text-center text-gray-500 text-sm">
+          <p>
+            OLYYO Admin Panel v2.0 • {new Date().getFullYear()} • All rights
+            reserved
           </p>
-          <div className="flex items-center justify-center space-x-4 mt-2 text-xs text-gray-600">
-            <span>Overall Rating: 4.3/5</span>
-            <span>•</span>
-            <span>Response Time: 15min</span>
-            <span>•</span>
-            <span>Customer Satisfaction: 92%</span>
-          </div>
+          {/* <p className="mt-1 text-xs">
+            Real-time analytics dashboard with interactive visualizations
+          </p> */}
+
+          <p className="mt-1 text-xs">
+                      ❤️Proudly developed by{" "}
+                      <Link href="https://designglobal.in/">
+                        Design Global Technology
+                      </Link>
+                    </p>
         </footer>
       </div>
 

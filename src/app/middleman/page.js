@@ -41,7 +41,7 @@ import {
   ChevronUp,
   Eye,
   MessageCircle,
-  Link,
+  // Link,
   Zap,
   Battery,
   Thermometer,
@@ -52,6 +52,8 @@ import {
   GitBranch,
   IndianRupee
 } from 'lucide-react';
+import Link from "next/link";
+
 
 // Middleman Sidebar Component
 function MiddlemanSidebar({ activeTab, setActiveTab, isMobileOpen, setIsMobileOpen }) {
@@ -81,7 +83,7 @@ function MiddlemanSidebar({ activeTab, setActiveTab, isMobileOpen, setIsMobileOp
         ${isMobileOpen ? 'translate-x-0' : '-translate-x-full xl:translate-x-0'}
       `}>
         {/* Logo */}
-        <div className="h-20 border-b border-gray-800 flex items-center px-6">
+        <Link href='/' className="h-20 border-b border-gray-800 flex items-center px-6">
           <div className="flex items-center space-x-3">
             <div className="w-10 h-10 bg-gradient-to-r from-green-500 to-emerald-500 rounded-lg flex items-center justify-center">
               <GitBranch className="w-6 h-6 text-white" />
@@ -91,7 +93,7 @@ function MiddlemanSidebar({ activeTab, setActiveTab, isMobileOpen, setIsMobileOp
               <p className="text-xs text-gray-500">Coordination Panel</p>
             </div>
           </div>
-        </div>
+        </Link>
 
         {/* Menu */}
         <div className="h-[calc(100vh-160px)] overflow-y-auto py-4">
@@ -140,9 +142,9 @@ function MiddlemanSidebar({ activeTab, setActiveTab, isMobileOpen, setIsMobileOp
               <p className="text-sm font-medium text-white truncate">John Coordinator</p>
               <p className="text-xs text-gray-500 truncate">middleman@olyyo.com</p>
             </div>
-            <button className="p-2 hover:bg-gray-800 rounded-lg" >
+            <Link href='/' className="p-2 hover:bg-gray-800 rounded-lg" >
               <LogOut className="w-5 h-5 text-gray-400" />
-            </button>
+            </Link>
           </div>
         </div>
 
@@ -1204,17 +1206,21 @@ export default function MiddlemanDashboard() {
         </main>
 
         {/* Footer */}
-        <footer className="p-6 border-t border-gray-800 text-center">
-          <p className="text-sm text-gray-500">
-            © {new Date().getFullYear()} Middleman Hub • Coordination Panel. Powered by OLYYO.
+        <footer className="p-6 border-t border-gray-800 text-center text-gray-500 text-sm">
+          <p>
+            OLYYO Admin Panel v2.0 • {new Date().getFullYear()} • All rights
+            reserved
           </p>
-          <div className="flex items-center justify-center space-x-4 mt-2 text-xs text-gray-600">
-            <span>Network: 24 Restaurants • 42 Delivery Partners</span>
-            <span>•</span>
-            <span>Success Rate: 96%</span>
-            <span>•</span>
-            <span>Avg Commission: $2.75/order</span>
-          </div>
+          {/* <p className="mt-1 text-xs">
+            Real-time analytics dashboard with interactive visualizations
+          </p> */}
+
+          <p className="mt-1 text-xs">
+            ❤️Proudly developed by{" "}
+            <Link href="https://designglobal.in/">
+              Design Global Technology
+            </Link>
+          </p>
         </footer>
       </div>
 

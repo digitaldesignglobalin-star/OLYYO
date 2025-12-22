@@ -47,6 +47,7 @@ import {
   IndianRupee,
 } from "lucide-react";
 import Navbar from "@/components/home/Navbar";
+import Link from "next/link";
 
 export default function DeliveryPartnerPage() {
   const [formData, setFormData] = useState({
@@ -906,6 +907,13 @@ Contact: +1-800-OLYYO-123`;
           
           <div className="mt-8 pt-8 border-t border-gray-800 text-center text-gray-500 text-sm">
             <p>© {new Date().getFullYear()} OLYYO Delivery. All rights reserved.</p>
+
+            <p className="mt-1 text-xs">
+            ❤️Proudly developed by{" "}
+            <Link href="https://designglobal.in/">
+              Design Global Technology
+            </Link>
+          </p>
           </div>
         </div>
       </footer>

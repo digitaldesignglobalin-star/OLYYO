@@ -70,7 +70,9 @@ import {
   LineChart,
   ChevronRight,
   IndianRupee,
+  Heart,
 } from "lucide-react";
+import Link from "next/link";
 
 // Animated Sidebar Component
 function AdminSidebar({
@@ -151,7 +153,10 @@ function AdminSidebar({
         {/* Logo with glow effect */}
         <div className="p-6 border-b border-gray-800 relative overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-r from-orange-500/5 to-red-500/5"></div>
-          <div className="relative flex items-center space-x-3">
+          <Link
+            href="/"
+            className="relative flex items-center space-x-3 cursor-pointer"
+          >
             <div className="relative">
               <div className="absolute inset-0 bg-gradient-to-r from-orange-500 to-red-500 rounded-lg blur-lg opacity-50"></div>
               <div className="relative w-12 h-12 bg-gradient-to-r from-gray-800 to-gray-900 border border-gray-700 rounded-lg flex items-center justify-center group">
@@ -165,9 +170,7 @@ function AdminSidebar({
               </h1>
               <p className="text-xs text-gray-400">Control Panel v2.0</p>
             </div>
-          </div>
-
-          
+          </Link>
         </div>
 
         {/* Menu with hover effects */}
@@ -263,9 +266,12 @@ function AdminSidebar({
               <p className="text-sm font-medium text-white">Super Admin</p>
               <p className="text-xs text-gray-500">admin@olyyo.com</p>
             </div>
-            <button className="p-2 hover:bg-gray-800 rounded-lg transition-colors">
+            <Link
+              href="/"
+              className="p-2 hover:bg-gray-800 rounded-lg transition-colors"
+            >
               <LogOut className="w-5 h-5 text-gray-400" />
-            </button>
+            </Link>
           </div>
         </div>
 
@@ -521,12 +527,14 @@ function RestaurantManagement() {
           </div>
 
           {/* Quick Filter Buttons */}
-          <div className="flex gap-4
+          <div
+            className="flex gap-4
     overflow-x-auto
     whitespace-nowrap
     scrollbar-hide
     -mx-4 px-4
-    lg:overflow-visible lg:mx-0 lg:px-0 ">
+    lg:overflow-visible lg:mx-0 lg:px-0 "
+          >
             <button
               onClick={() => setSelectedFilter("all")}
               className={`px-6 py-3 rounded-xl font-medium transition-all duration-300 mb-2 ${
@@ -2511,8 +2519,15 @@ export default function AdminDashboard() {
             OLYYO Admin Panel v2.0 • {new Date().getFullYear()} • All rights
             reserved
           </p>
-          <p className="mt-1 text-xs">
+          {/* <p className="mt-1 text-xs">
             Real-time analytics dashboard with interactive visualizations
+          </p> */}
+
+          <p className="mt-1 text-xs">
+            ❤️Proudly developed by{" "}
+            <Link href="https://designglobal.in/">
+              Design Global Technology
+            </Link>
           </p>
         </footer>
       </div>
