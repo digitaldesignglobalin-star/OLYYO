@@ -25,48 +25,48 @@ export default function Navbar() {
   const router = useRouter();
 
   const userTypes = [
-    { 
-      id: "home", 
-      label: "Home", 
-      icon: <Home className="w-4 h-4" />, 
+    {
+      id: "home",
+      label: "Home",
+      icon: <Home className="w-4 h-4 " />,
       path: "/",
-      color: "from-blue-500 to-cyan-500"
+      color: "from-blue-500 to-cyan-500",
     },
-    { 
-      id: "admin", 
-      label: "Admin", 
-      icon: <Shield className="w-4 h-4" />, 
+    {
+      id: "admin",
+      label: "Admin",
+      icon: <Shield className="w-4 h-4" />,
       path: "/admin",
-      color: "from-purple-500 to-pink-500"
+      color: "from-purple-500 to-pink-500",
     },
     {
       id: "restaurant",
       label: "Restaurant",
       icon: <Coffee className="w-4 h-4" />,
       path: "/restaurant",
-      color: "from-orange-500 to-red-500"
+      color: "from-orange-500 to-red-500",
     },
     {
       id: "middleman",
       label: "Middle Man",
       icon: <User className="w-4 h-4" />,
       path: "/middleman",
-      color: "from-green-500 to-emerald-500"
+      color: "from-green-500 to-emerald-500",
     },
     {
       id: "delivery",
       label: "Delivery",
       icon: <Truck className="w-4 h-4" />,
       path: "/delivery",
-      color: "from-indigo-500 to-blue-500"
+      color: "from-indigo-500 to-blue-500",
     },
-    { 
-      id: "customer", 
-      label: "Customer", 
+    {
+      id: "customer",
+      label: "Customer",
       icon: <User className="w-4 h-4" />,
       // path: "/customer",
       path: "/user",
-      color: "from-gray-500 to-gray-700"
+      color: "from-gray-500 to-gray-700",
     },
   ];
 
@@ -80,12 +80,12 @@ export default function Navbar() {
 
   const handleNavigation = async (type) => {
     if (isNavigating) return;
-    
+
     setIsNavigating(true);
     setUserType(type);
-    
+
     // Find the route for the selected user type
-    const selectedType = userTypes.find(t => t.id === type);
+    const selectedType = userTypes.find((t) => t.id === type);
     if (selectedType && selectedType.path) {
       try {
         await router.push(selectedType.path);
@@ -93,7 +93,7 @@ export default function Navbar() {
         console.error("Navigation error:", error);
       }
     }
-    
+
     // Reset navigating state after a short delay
     setTimeout(() => {
       setIsNavigating(false);
@@ -124,7 +124,7 @@ export default function Navbar() {
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between">
           {/* Logo with animation */}
-          <div 
+          <div
             className="group cursor-pointer flex items-center"
             onClick={handleLogoClick}
           >
@@ -163,11 +163,11 @@ export default function Navbar() {
                 key={type.id}
                 onClick={() => handleNavigation(type.id)}
                 disabled={isNavigating}
-                className={`flex items-center space-x-2 px-4 py-2.5 rounded-full transition-all duration-300 ripple-effect min-w-[100px] justify-center ${
+                className={`flex items-center space-x-2 px-4 py-2.5 rounded-full transition-all duration-300 ripple-effect min-w-[100px] justify-center cursor-pointer ${
                   userType === type.id
                     ? `bg-gradient-to-r ${type.color} text-white shadow-lg scale-105`
                     : "bg-white text-gray-700 hover:bg-gray-50 border border-gray-200 hover:border-gray-300"
-                } ${isNavigating ? 'opacity-50 cursor-not-allowed' : ''}`}
+                } ${isNavigating ? "opacity-50 cursor-not-allowed" : ""}`}
               >
                 <div
                   className={`transition-transform duration-300 ${
@@ -192,7 +192,7 @@ export default function Navbar() {
                             hover:scale-110 group ripple-effect"
               disabled={isNavigating}
             >
-              <ShoppingBag className="w-5 h-5 text-gray-700 group-hover:text-orange-600 transition-colors duration-300" />
+              <ShoppingBag className="w-5 h-5 text-gray-700 group-hover:text-orange-600 transition-colors duration-300 cursor-pointer" />
               <span
                 className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center 
                              group-hover:scale-125 group-hover:bg-red-600 transition-all duration-300"
@@ -205,9 +205,9 @@ export default function Navbar() {
               disabled={isNavigating}
               className="bg-gradient-to-r from-orange-500 to-red-500 text-white px-6 py-2.5 rounded-full font-medium 
                            hover:shadow-lg hover:shadow-orange-500/40 transition-all duration-300 hover:scale-105 active:scale-95 
-                           ripple-effect glow-on-hover flex items-center space-x-2"
+                           ripple-effect glow-on-hover flex items-center space-x-2 cursor-pointer"
             >
-              <User className="w-4 h-4" />
+              <User className="w-4 h-4 " />
               <span>Sign In</span>
               {isNavigating && (
                 <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin ml-2"></div>
@@ -220,7 +220,9 @@ export default function Navbar() {
         {mobileMenuOpen && (
           <div className="md:hidden mt-4 p-4 bg-white rounded-2xl shadow-xl border border-orange-100 animate-slide-down">
             <div className="mb-4">
-              <h3 className="text-sm font-semibold text-gray-500 mb-2 px-1">Switch Panel</h3>
+              <h3 className="text-sm font-semibold text-gray-500 mb-2 px-1">
+                Switch Panel
+              </h3>
               <div className="space-y-2">
                 {userTypes.map((type) => (
                   <button
@@ -231,7 +233,7 @@ export default function Navbar() {
                       userType === type.id
                         ? `bg-gradient-to-r ${type.color} text-white`
                         : "bg-gray-50 hover:bg-gray-100 text-gray-700"
-                    } ${isNavigating ? 'opacity-50 cursor-not-allowed' : ''}`}
+                    } ${isNavigating ? "opacity-50 cursor-not-allowed" : ""}`}
                   >
                     <div className="flex items-center space-x-3">
                       {type.icon}
@@ -246,7 +248,7 @@ export default function Navbar() {
                 ))}
               </div>
             </div>
-            
+
             <div className="pt-4 border-t border-gray-100">
               <div className="flex items-center space-x-4">
                 <button
@@ -269,7 +271,7 @@ export default function Navbar() {
                   </span>
                 </button>
               </div>
-              
+
               {isNavigating && (
                 <div className="mt-4 text-center">
                   <div className="inline-flex items-center space-x-2 text-sm text-orange-600 bg-orange-50 px-3 py-1.5 rounded-full">
@@ -282,7 +284,7 @@ export default function Navbar() {
           </div>
         )}
       </div>
-      
+
       {/* Global Loading Overlay */}
       {isNavigating && (
         <div className="fixed inset-0 bg-black/10 backdrop-blur-sm z-40 md:hidden pointer-events-none"></div>

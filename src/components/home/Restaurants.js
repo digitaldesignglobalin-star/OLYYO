@@ -39,7 +39,7 @@ export default function Restaurants() {
           {restaurants.map((restaurant, index) => (
             <div 
               key={restaurant.id}
-              className="bg-white rounded-2xl shadow-lg overflow-hidden card-hover animate-slide-up"
+              className="bg-white rounded-2xl shadow-lg overflow-hidden card-hover animate-slide-up cursor-pointer"
               style={{animationDelay: `${index * 0.1}s`}}
             >
               <div className="relative overflow-hidden group">
@@ -60,7 +60,7 @@ export default function Restaurants() {
                 <button 
                   onClick={() => toggleLike(restaurant.id)}
                   className="absolute top-2 right-0 p-2 bg-white/90 rounded-full hover:bg-white 
-                           transition-all duration-300 hover:scale-110 ripple-effect"
+                           transition-all duration-300 hover:scale-110 ripple-effect cursor-pointer"
                 >
                   <Heart className={`w-5 h-5 transition-all duration-300 ${
                     likedRestaurants.includes(restaurant.id) 
@@ -100,7 +100,7 @@ export default function Restaurants() {
                 <button className="w-full bg-gradient-to-r from-orange-500 to-red-500 text-white py-3 
                                  rounded-xl font-medium hover:shadow-lg hover:shadow-orange-500/30 
                                  transition-all duration-300 hover:scale-105 active:scale-95 
-                                 group flex items-center justify-center ripple-effect">
+                                 group flex items-center justify-center ripple-effect cursor-pointer">
                   <span className="group-hover:scale-110 transition-transform duration-300">Order Now</span>
                   <ChevronRight className="w-4 h-4 ml-2 opacity-0 group-hover:opacity-100 group-hover:translate-x-2 
                                          transition-all duration-300" />

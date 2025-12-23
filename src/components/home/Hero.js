@@ -58,7 +58,7 @@ export default function Hero() {
                style={{animationDelay: '0.3s'}}>
             <div className="flex flex-col md:flex-row gap-2">
               <div className="flex-1 flex items-center p-3 border-r border-gray-100 group">
-                <div className="relative">
+                <div className="relative cursor-pointer">
                   <MapPin className={`w-5 h-5 text-orange-500 mr-3 transition-all duration-300 
                                    ${isTyping ? 'scale-125' : ''} group-hover:scale-125`} />
                   {pulse && (
@@ -76,12 +76,12 @@ export default function Hero() {
                            transition-all duration-300 focus:placeholder-transparent"
                 />
                 <button className="ml-2 text-orange-500 hover:text-orange-600 text-sm font-medium 
-                                 hover:scale-105 transition-transform duration-300 flex items-center">
+                                 hover:scale-105 transition-transform duration-300 flex items-center cursor-pointer">
                   <Navigation className="w-4 h-4 mr-1" />
                   Current
                 </button>
               </div>
-              <div className="flex-1 flex items-center p-3 border-r border-gray-100 group">
+              <div className="flex-1 flex items-center p-3 border-r border-gray-100 group cursor-pointer">
                 <Search className={`w-5 h-5 text-gray-400 mr-3 transition-all duration-300 
                                  ${isTyping ? 'text-orange-500 scale-125' : ''} group-hover:text-orange-500`} />
                 <input
@@ -100,7 +100,7 @@ export default function Hero() {
                 className="bg-gradient-to-r from-orange-500 to-red-500 text-white px-8 py-3 rounded-xl font-medium 
                          hover:shadow-lg hover:shadow-orange-500/40 transition-all duration-300 
                          hover:scale-105 active:scale-95 ripple-effect glow-on-hover flex items-center justify-center 
-                         group animate-pulse-slow"
+                         group animate-pulse-slow cursor-pointer"
               >
                 <Search className="w-5 h-5 mr-2 group-hover:rotate-12 transition-transform duration-300" />
                 Search

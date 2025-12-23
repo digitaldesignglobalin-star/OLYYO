@@ -41,7 +41,7 @@ export default function Foods() {
           {popularFoods.map((food, index) => (
             <div 
               key={food.id}
-              className="bg-white rounded-2xl shadow-lg p-6 card-hover animate-slide-up group"
+              className="bg-white rounded-2xl shadow-lg p-6 card-hover animate-slide-up group cursor-pointer"
               style={{animationDelay: `${index * 0.1}s`}}
             >
               {/* Food Image */}
@@ -88,7 +88,7 @@ export default function Foods() {
                   onClick={() => addToCart(food.id)}
                   className="bg-gradient-to-r from-orange-500 to-red-500 text-white px-4 py-2 rounded-lg 
                            hover:shadow-lg hover:shadow-orange-500/30 transition-all duration-300 
-                           hover:scale-105 active:scale-95 flex items-center ripple-effect"
+                           hover:scale-105 active:scale-95 flex items-center ripple-effect cursor-pointer"
                 >
                   <ShoppingBag className="w-4 h-4 mr-1 group-hover:rotate-12 transition-transform duration-300" />
                   Add
