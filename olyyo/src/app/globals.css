@@ -1,0 +1,382 @@
+@import "tailwindcss";
+
+/* Custom CSS variables */
+:root {
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 255, 247, 240;
+  --background-end-rgb: 255, 255, 255;
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  background: linear-gradient(
+      to bottom,
+      transparent,
+      rgb(var(--background-end-rgb))
+    )
+    rgb(var(--background-start-rgb));
+}
+
+/* Custom utility classes */
+@layer utilities {
+  .btn-primary {
+    @apply bg-gradient-to-r from-orange-500 to-red-500 text-white px-6 py-3 rounded-xl font-medium hover:shadow-lg transition-all duration-300 hover:scale-105;
+  }
+  
+  .btn-secondary {
+    @apply bg-white text-gray-700 px-6 py-3 rounded-xl font-medium border border-gray-200 hover:bg-orange-50 transition-all duration-300;
+  }
+  
+  .card-hover {
+    @apply hover:shadow-xl transition-shadow duration-300;
+  }
+}
+
+@import "tailwindcss";
+
+/* Custom CSS variables */
+:root {
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 255, 247, 240;
+  --background-end-rgb: 255, 255, 255;
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  background: linear-gradient(
+      to bottom,
+      transparent,
+      rgb(var(--background-end-rgb))
+    )
+    rgb(var(--background-start-rgb));
+}
+
+/* Custom animations */
+@theme {
+  --animate-fade-in: fadeIn 0.5s ease-in-out;
+  --animate-slide-up: slideUp 0.3s ease-out;
+  --animate-slide-down: slideDown 0.3s ease-out;
+  --animate-scale: scaleUp 0.2s ease-out;
+  --animate-pulse-slow: pulseSlow 2s ease-in-out infinite;
+  --animate-float: float 3s ease-in-out infinite;
+  --animate-shimmer: shimmer 2s infinite linear;
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes slideUp {
+    from {
+      transform: translateY(20px);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+  @keyframes slideDown {
+    from {
+      transform: translateY(-20px);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+  @keyframes scaleUp {
+    from {
+      transform: scale(0.95);
+      opacity: 0;
+    }
+    to {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+
+  @keyframes pulseSlow {
+    0%, 100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.7;
+    }
+  }
+
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+
+  @keyframes shimmer {
+    0% {
+      background-position: -200% center;
+    }
+    100% {
+      background-position: 200% center;
+    }
+  }
+
+  @keyframes bounceIn {
+    0% {
+      transform: scale(0.3);
+      opacity: 0;
+    }
+    50% {
+      transform: scale(1.05);
+    }
+    70% {
+      transform: scale(0.9);
+    }
+    100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+
+  @keyframes ripple {
+    0% {
+      transform: scale(0);
+      opacity: 1;
+    }
+    100% {
+      transform: scale(4);
+      opacity: 0;
+    }
+  }
+}
+
+/* Custom utility classes */
+@layer utilities {
+  .btn-primary {
+    @apply bg-gradient-to-r from-orange-500 to-red-500 text-white px-6 py-3 rounded-xl font-medium 
+           hover:shadow-lg hover:shadow-orange-500/30 transition-all duration-300 
+           hover:scale-105 active:scale-95;
+  }
+  
+  .btn-secondary {
+    @apply bg-white text-gray-700 px-6 py-3 rounded-xl font-medium border border-gray-200 
+           hover:bg-orange-50 hover:border-orange-200 transition-all duration-300 
+           hover:scale-105 active:scale-95;
+  }
+  
+  .card-hover {
+    @apply hover:shadow-xl hover:shadow-gray-300/50 transition-all duration-500 
+           hover:-translate-y-2 hover:scale-102;
+  }
+  
+  .shimmer-effect {
+    background: linear-gradient(90deg, 
+      transparent 0%, 
+      rgba(255,255,255,0.3) 50%, 
+      transparent 100%);
+    background-size: 200% 100%;
+    animation: var(--animate-shimmer);
+  }
+  
+  .pulse-ring {
+    @apply animate-pulse-slow;
+  }
+  
+  .float-animation {
+    @apply animate-float;
+  }
+  
+  .scale-on-hover {
+    @apply transition-transform duration-300 hover:scale-110;
+  }
+  
+  .glow-on-hover {
+    @apply transition-all duration-300 hover:shadow-lg hover:shadow-orange-500/20;
+  }
+  
+  .bounce-in {
+    animation: bounceIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+  
+  .ripple-effect {
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .ripple-effect::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 5px;
+    height: 5px;
+    background: rgba(255, 255, 255, 0.6);
+    opacity: 0;
+    border-radius: 100%;
+    transform: scale(1, 1) translate(-50%);
+    transform-origin: 50% 50%;
+  }
+  
+  .ripple-effect:focus:not(:active)::after {
+    animation: ripple 1s ease-out;
+  }
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(to bottom, #f97316, #ef4444);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(to bottom, #ea580c, #dc2626);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Custom CSS variables for Admin Theme */
+:root {
+  --admin-bg: #0f172a;
+  --admin-sidebar: #1e293b;
+  --admin-card: #334155;
+  --admin-text: #f1f5f9;
+  --admin-text-secondary: #94a3b8;
+  --admin-primary: #3b82f6;
+  --admin-success: #10b981;
+  --admin-warning: #f59e0b;
+  --admin-danger: #ef4444;
+}
+
+/* Admin Theme */
+.admin-theme {
+  background-color: var(--admin-bg);
+  color: var(--admin-text);
+}
+
+/* Custom utility classes */
+@layer utilities {
+  .admin-card {
+    @apply bg-gradient-to-br from-slate-800 to-slate-900 rounded-xl border border-slate-700 shadow-xl;
+  }
+  
+  .admin-sidebar-item {
+    @apply flex items-center space-x-3 px-4 py-3 rounded-lg transition-all duration-300 
+           hover:bg-slate-800 hover:text-white;
+  }
+  
+  .admin-sidebar-active {
+    @apply bg-gradient-to-r from-blue-600 to-cyan-500 text-white shadow-lg;
+  }
+  
+  .admin-stat-up {
+    @apply text-green-400;
+  }
+  
+  .admin-stat-down {
+    @apply text-red-400;
+  }
+  
+  .admin-btn-primary {
+    @apply bg-gradient-to-r from-blue-600 to-cyan-500 text-white px-4 py-2 rounded-lg 
+           hover:shadow-lg hover:shadow-blue-500/30 transition-all duration-300 
+           hover:scale-105 active:scale-95;
+  }
+}
+
+/* Animations */
+@theme {
+  --animate-fade-in: fadeIn 0.5s ease-in-out;
+  --animate-slide-up: slideUp 0.3s ease-out;
+  --animate-slide-right: slideRight 0.3s ease-out;
+  --animate-pulse-slow: pulseSlow 2s ease-in-out infinite;
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  
+  @keyframes slideUp {
+    from {
+      transform: translateY(20px);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+  
+  @keyframes slideRight {
+    from {
+      transform: translateX(-20px);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+  
+  @keyframes pulseSlow {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1e293b;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(to bottom, #3b82f6, #06b6d4);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(to bottom, #2563eb, #0891b2);
+}
