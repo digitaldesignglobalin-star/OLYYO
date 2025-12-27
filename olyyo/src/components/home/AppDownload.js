@@ -61,7 +61,11 @@ export default function AppDownload() {
             <button
               onClick={() => setShowQR(!showQR)}
               className="flex items-center justify-center mx-auto text-white/80 hover:text-white 
+<<<<<<< HEAD:olyyo/src/components/home/AppDownload.js
                          transition-colors duration-300 group mb-4 cursor-pointer"
+=======
+                       transition-colors duration-300 group mb-4 cursor-pointer"
+>>>>>>> e7986252fded341eb9838272fd96bda28472bdf6:src/components/home/AppDownload.js
             >
               <FaQrcode className="w-5 h-5 mr-2 group-hover:scale-110 transition-transform duration-300" />
               Scan QR Code
@@ -90,12 +94,19 @@ export default function AppDownload() {
           </div>
 
           {/* App Store Buttons */}
+<<<<<<< HEAD:olyyo/src/components/home/AppDownload.js
           <div className="flex flex-col sm:flex-row justify-center gap-6">
             <button
               className="bg-black text-white px-8 py-4 rounded-xl flex items-center justify-center 
                          space-x-3 hover:bg-gray-900 transition-all duration-300 hover:scale-105 
                          active:scale-95 group"
             >
+=======
+          <div className="flex flex-col sm:flex-row justify-center gap-6 animate-slide-up " style={{animationDelay: '0.2s'}}>
+            <button className="bg-black text-white px-8 py-4 rounded-xl flex items-center justify-center 
+                             space-x-3 hover:bg-gray-900 transition-all duration-300 hover:scale-105 
+                             active:scale-95 group ripple-effect cursor-pointer">
+>>>>>>> e7986252fded341eb9838272fd96bda28472bdf6:src/components/home/AppDownload.js
               <FaApple className="w-6 h-6 group-hover:scale-110 transition-transform duration-300" />
               <div className="text-left">
                 <div className="text-sm opacity-90">Download on the</div>
@@ -106,14 +117,21 @@ export default function AppDownload() {
                 </div>
               </div>
             </button>
+<<<<<<< HEAD:olyyo/src/components/home/AppDownload.js
 
             <button
               className="bg-white text-gray-800 px-8 py-4 rounded-xl flex items-center justify-center 
                          space-x-3 hover:bg-gray-100 transition-all duration-300 hover:scale-105 
                          active:scale-95 group"
             >
+=======
+            
+            <button className="bg-white text-gray-800 px-8 py-4 rounded-xl flex items-center justify-center 
+                             space-x-3 hover:bg-gray-100 transition-all duration-300 hover:scale-105 
+                             active:scale-95 group ripple-effect cursor-pointer">
+>>>>>>> e7986252fded341eb9838272fd96bda28472bdf6:src/components/home/AppDownload.js
               <FaGoogle className="w-6 h-6 group-hover:scale-110 transition-transform duration-300" />
-              <div className="text-left">
+              <div className="text-left ">
                 <div className="text-sm">Get it on</div>
                 <div className="text-xl font-bold flex items-center">
                   Google Play
