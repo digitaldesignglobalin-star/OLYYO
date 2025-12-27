@@ -39,36 +39,24 @@ export default function Navbar() {
       id: "admin",
       label: "Admin",
       icon: <Shield className="w-4 h-4" />,
-<<<<<<< HEAD:olyyo/src/components/home/Navbar.js
       // path: "/admin",
       path: "/admin/login",
-=======
-      path: "/admin",
->>>>>>> e7986252fded341eb9838272fd96bda28472bdf6:src/components/home/Navbar.js
       color: "from-purple-500 to-pink-500",
     },
     {
       id: "restaurant",
       label: "Restaurant",
       icon: <Coffee className="w-4 h-4" />,
-<<<<<<< HEAD:olyyo/src/components/home/Navbar.js
       // path: "/restaurant",
       path: "/restaurant/login",
-=======
-      path: "/restaurant",
->>>>>>> e7986252fded341eb9838272fd96bda28472bdf6:src/components/home/Navbar.js
       color: "from-orange-500 to-red-500",
     },
     {
       id: "middleman",
       label: "Middle Man",
       icon: <User className="w-4 h-4" />,
-<<<<<<< HEAD:olyyo/src/components/home/Navbar.js
       // path: "/middleman",
       path: "/middleman/login",
-=======
-      path: "/middleman",
->>>>>>> e7986252fded341eb9838272fd96bda28472bdf6:src/components/home/Navbar.js
       color: "from-green-500 to-emerald-500",
     },
     {
@@ -224,12 +212,8 @@ export default function Navbar() {
                            ripple-effect glow-on-hover flex items-center space-x-2 cursor-pointer"
             >
               <User className="w-4 h-4 " />
-<<<<<<< HEAD:olyyo/src/components/home/Navbar.js
               {/* <span>Sign In</span> */}
               <Link href="/login">Sign In</Link>
-=======
-              <span>Sign In</span>
->>>>>>> e7986252fded341eb9838272fd96bda28472bdf6:src/components/home/Navbar.js
               {isNavigating && (
                 <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin ml-2"></div>
               )}
