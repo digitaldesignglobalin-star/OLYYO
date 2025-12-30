@@ -1,10 +1,10 @@
 "use client";
 import Link from "next/link";
 import { useState } from "react";
-import { useAuth } from "@/context/AuthContext";
+// import { useAuth } from "@/context/AuthContext";
 
 export default function LoginPage() {
-  const { login } = useAuth();
+  // const { login } = useAuth();
 
   const [form, setForm] = useState({
     username: "",
@@ -15,10 +15,10 @@ export default function LoginPage() {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleLogin = (e) => {
-    e.preventDefault();
-    login(form); // 🔥 username + password sent to backend
-  };
+  // const handleLogin = (e) => {
+  //   e.preventDefault();
+  //   login(form); // 🔥 username + password sent to backend
+  // };
 
   return (
     <div className="h-screen w-full flex items-center justify-center bg-[#FFF9F5] p-4 overflow-hidden font-sans">
@@ -34,8 +34,8 @@ export default function LoginPage() {
               Hungry? Login to start your 10-minute countdown.
             </p>
           </div>
-
-          <form onSubmit={handleLogin} className="space-y-4">
+{/* onSubmit={handleLogin} */}
+          <form  className="space-y-4">
             <input
               type="text"
               name="username"

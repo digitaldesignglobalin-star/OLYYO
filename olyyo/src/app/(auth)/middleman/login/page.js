@@ -5,14 +5,14 @@ import { Lock, Mail, Eye, EyeOff, ArrowRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import logoImage from "../../../../../public/olyyo-logo.png";
-import { useAuth } from "@/context/AuthContext";
+// import { useAuth } from "@/context/AuthContext";
 
 export default function MiddlemanLogin() {
   const [showPassword, setShowPassword] = useState(false);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  const { login } = useAuth();
+  // const { login } = useAuth();
 
   const handleLogin = (e) => {
     e.preventDefault();

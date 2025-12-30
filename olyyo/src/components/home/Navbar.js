@@ -18,8 +18,6 @@ import Image from "next/image";
 import logoImage from "../../../public/olyyo-logo.png";
 import Link from "next/link";
 
-
-
 export default function Navbar() {
   const [userType, setUserType] = useState("customer");
   const [scrolled, setScrolled] = useState(false);
@@ -84,34 +82,62 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const handleNavigation = async (type) => {
-    if (isNavigating) return;
 
-    setIsNavigating(true);
-    setUserType(type);
 
-    // Find the route for the selected user type
-    const selectedType = userTypes.find((t) => t.id === type);
-    if (selectedType && selectedType.path) {
-      try {
-        await router.push(selectedType.path);
-      } catch (error) {
-        console.error("Navigation error:", error);
-      }
+  // const handleNavigation = async (type) => {
+  //   if (isNavigating) return;
+
+  //   setIsNavigating(true);
+  //   setUserType(type);
+
+  //   const selectedType = userTypes.find((t) => t.id === type);
+  //   if (!selectedType?.path) {
+  //     setIsNavigating(false);
+  //     return;
+  //   }
+
+  //   // 🔒 TEMP: until Auth.js is ready
+  //   // Any panel except home → go to login
+  //   if (type !== "home") {
+  //     router.push("/login");
+  //   } else {
+  //     router.push(selectedType.path);
+  //   }
+
+  //   setTimeout(() => {
+  //     setIsNavigating(false);
+  //     setMobileMenuOpen(false);
+  //   }, 300);
+  // };
+
+
+const handleNavigation = async (type) => {
+  if (isNavigating) return;
+
+  setIsNavigating(true);
+  setUserType(type);
+
+  const selectedType = userTypes.find((t) => t.id === type);
+  if (selectedType && selectedType.path) {
+    try {
+      await router.push(selectedType.path);
+    } catch (error) {
+      console.error("Navigation error:", error);
     }
+  }
 
-    // Reset navigating state after a short delay
-    setTimeout(() => {
-      setIsNavigating(false);
-      setMobileMenuOpen(false);
-    }, 300);
-  };
+  setTimeout(() => {
+    setIsNavigating(false);
+    setMobileMenuOpen(false);
+  }, 300);
+};
+
+
+
 
   const handleLogoClick = () => {
     handleNavigation("home");
   };
-
-
 
   const handleCartClick = () => {
     router.push("/cart");
@@ -204,20 +230,19 @@ export default function Navbar() {
                 3
               </span>
             </button>
-            <button
-              
-              disabled={isNavigating}
+            <Link
+              href="/login"
               className="bg-gradient-to-r from-orange-500 to-red-500 text-white px-6 py-2.5 rounded-full font-medium 
-                           hover:shadow-lg hover:shadow-orange-500/40 transition-all duration-300 hover:scale-105 active:scale-95 
-                           ripple-effect glow-on-hover flex items-center space-x-2 cursor-pointer"
+             hover:shadow-lg hover:shadow-orange-500/40 transition-all duration-300 hover:scale-105 active:scale-95 
+             ripple-effect glow-on-hover flex items-center space-x-2 cursor-pointer"
             >
-              <User className="w-4 h-4 " />
-              {/* <span>Sign In</span> */}
-              <Link href="/login">Sign In</Link>
+              <User className="w-4 h-4" />
+              <span>Sign In</span>
+
               {isNavigating && (
                 <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin ml-2"></div>
               )}
-            </button>
+            </Link>
           </div>
         </div>
 
@@ -256,14 +281,14 @@ export default function Navbar() {
 
             <div className="pt-4 border-t border-gray-100">
               <div className="flex items-center space-x-4">
-                <button
-                  disabled={isNavigating}
+                <Link
+                  href="/login"
                   className="flex-1 bg-gradient-to-r from-orange-500 to-red-500 text-white px-4 py-3 rounded-xl 
-                               font-medium hover:shadow-lg transition-all duration-300 flex items-center justify-center space-x-2"
+             font-medium hover:shadow-lg transition-all duration-300 flex items-center justify-center space-x-2"
                 >
                   <User className="w-4 h-4" />
-                  <Link href="/login">Sign In</Link>
-                </button>
+                  <span>Sign In</span>
+                </Link>
                 <button
                   onClick={handleCartClick}
                   disabled={isNavigating}

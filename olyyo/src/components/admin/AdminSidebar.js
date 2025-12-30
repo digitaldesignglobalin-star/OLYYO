@@ -20,6 +20,13 @@ import {
   Store as StoreIcon,
 } from "lucide-react";
 import Link from "next/link";
+import { signOut } from "next-auth/react";
+
+
+
+
+
+
 
 // Animated Sidebar Component
 export default function AdminSidebar({
@@ -78,6 +85,16 @@ export default function AdminSidebar({
       color: "from-red-500/20 to-red-600/20",
     },
   ];
+
+
+  const handleLogout = async () => {
+  await signOut({
+    callbackUrl: "/admin/login",
+  });
+};
+
+
+
 
   return (
     <>
@@ -211,12 +228,13 @@ export default function AdminSidebar({
               <p className="text-sm font-medium text-white">Super Admin</p>
               <p className="text-xs text-gray-500">admin@olyyo.com</p>
             </div>
-            <Link
-              href="/"
-              className="p-2 hover:bg-gray-800 rounded-lg transition-colors"
-            >
-              <LogOut className="w-5 h-5 text-gray-400" />
-            </Link>
+            <button
+  onClick={handleLogout}
+  className="p-2 hover:bg-gray-800 rounded-lg transition-colors"
+>
+  <LogOut className="w-5 h-5 text-gray-400" />
+</button>
+
           </div>
         </div>
 
