@@ -30,28 +30,32 @@ export default function RestaurantRegister() {
 
   const handleRegister = async (e) => {
     e.preventDefault();
+
+    // ✅ FRONTEND CHECK (correct place)
+    if (password !== confirmPassword) {
+      alert("Passwords do not match");
+      return;
+    }
+
     setIsLoading(true);
 
     try {
-      const res = await fetch(
-        "http://localhost:2000/api/auth/restaurant/register",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            username,
-            email,
-            password,
-            confirmPassword,
-          }),
-        }
-      );
+      const res = await fetch("/api/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          username,
+          email,
+          password,
+          confirmPassword,
+          role: "restaurant",
+        }),
+      });
 
       const data = await res.json();
 
       if (!res.ok) {
         alert(data.message || "Registration failed");
-        setIsLoading(false);
         return;
       }
 
@@ -59,6 +63,7 @@ export default function RestaurantRegister() {
       router.push("/restaurant/login");
     } catch (err) {
       alert("Backend not reachable");
+    } finally {
       setIsLoading(false);
     }
   };

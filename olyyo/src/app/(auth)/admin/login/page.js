@@ -148,15 +148,23 @@ export default function AdminLogin() {
               {/* <span className="uppercase tracking-widest text-sm">
                 Sign In to Dashboard
               </span> */}
-              <span className="uppercase tracking-widest text-sm">
-                Login
-              </span>
+              <span className="uppercase tracking-widest text-sm">Login</span>
               <div className="bg-white/20 p-1.5 rounded-lg">
                 <ArrowRight size={20} />
               </div>
             </button>
           </form>
         </div>
+
+        {/* <button className="mb-[-60.5] mt-3 w-full bg-gradient-to-r from-[#8b5cf6] via-[#ec4899] to-[#ef4444] text-white font-bold py-5 rounded-2xl flex items-center justify-center space-x-4 hover:brightness-110 active:scale-[0.98] transition-all shadow-[0_10px_20px_rgba(239,68,68,0.2)]">
+          
+          <span className="uppercase tracking-widest text-sm">
+            back to home
+          </span>
+          <div className="bg-white/20 p-1.5 rounded-lg">
+            <ArrowRight size={20} />
+          </div>
+        </button> */}
 
         {/* Footer info at the bottom */}
         {/* <div className="mt-12 text-center">

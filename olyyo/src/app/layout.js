@@ -1,5 +1,6 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import Providers from "./providers";
 // import { AuthProvider } from "@/context/AuthContext";
 // import Navbar from "@/components/home/Navbar";
 
@@ -28,7 +29,8 @@ export default function RootLayout({ children }) {
     <html lang="en" suppressHydrationWarning>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         {/* <AuthProvider> */}
-          {children}
+        <Providers>{children}</Providers>
+          
         {/* </AuthProvider> */}
       </body>
     </html>

@@ -12,7 +12,7 @@ export default function RegisterPage() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
-  const handleRegister = (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
 
     if (password !== confirmPassword) {
@@ -20,12 +20,33 @@ export default function RegisterPage() {
       return;
     }
 
-    register({
-      username,
-      email,
-      password,
-      confirmPassword,
-    });
+    try {
+      const res = await fetch("/api/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          username,
+          email,
+          password,
+          confirmPassword,
+          role: "user", // 👈 IMPORTANT
+        }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        alert(data.message || "Registration failed");
+        return;
+      }
+
+      alert("Account created successfully!");
+      // window.location.href = "/login";
+      router.push("/login");
+
+    } catch (err) {
+      alert("Something went wrong");
+    }
   };
 
   return (

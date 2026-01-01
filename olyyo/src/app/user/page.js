@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { signOut, useSession } from "next-auth/react";
 import {
   Search,
   Star,
@@ -56,6 +57,7 @@ import {
   Hamburger,
   Sandwich,
   CakeSlice,
+  LogOut,
 } from "lucide-react";
 import Link from "next/link";
 
@@ -211,6 +213,8 @@ const initialCart = [
 
 export default function CustomerPage() {
   const router = useRouter();
+  const { data: session, status } = useSession();
+
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -228,7 +232,8 @@ export default function CustomerPage() {
 
   // Navigation handlers
   const handleNavigateToHome = () => {
-    router.push("/");
+    // router.push("/");
+    router.replace("/login");
   };
 
   const handleNavigateToProfile = () => {
@@ -329,6 +334,23 @@ export default function CustomerPage() {
   // Top picks (promoted restaurants)
   const topPicks = restaurants.filter(r => r.promoted);
 
+
+  useEffect(() => {
+  if (status === "loading") return;
+
+  // Not logged in
+  if (!session) {
+    router.replace("/login");
+    return;
+  }
+
+  // Wrong role
+  if (session.user.role !== "user") {
+    router.replace("/");
+  }
+}, [session, status, router]);
+
+
   return (
     <div className="min-h-screen bg-gray-50 text-gray-900">
       {/* Navigation */}
@@ -392,6 +414,16 @@ export default function CustomerPage() {
                   </span>
                 )}
               </button>
+
+              <button
+  onClick={async () => {
+    await signOut({ redirect: false });
+    router.push("/login");
+  }}
+  className="text-gray-600 hover:text-red-600 transition-colors"
+>
+  <LogOut className="w-5 h-5" />
+</button>
             </div>
 
             {/* Mobile Menu Button */}

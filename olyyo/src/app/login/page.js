@@ -2,9 +2,18 @@
 import Link from "next/link";
 import { useState } from "react";
 // import { useAuth } from "@/context/AuthContext";
+import { signIn, getSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+
+
+
+
 
 export default function LoginPage() {
   // const { login } = useAuth();
+
+  const router = useRouter();
+
 
   const [form, setForm] = useState({
     username: "",
@@ -15,15 +24,33 @@ export default function LoginPage() {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  // const handleLogin = (e) => {
-  //   e.preventDefault();
-  //   login(form); // 🔥 username + password sent to backend
-  // };
+ const handleLogin = async (e) => {
+  e.preventDefault();
+
+  const res = await signIn("credentials", {
+    username: form.username, // 🔥 MUST be username
+    password: form.password,
+    redirect: false,
+  });
+
+  if (!res || res.error) {
+    alert("Invalid credentials");
+    return;
+  }
+
+  // Get session to know role
+  const session = await getSession();
+
+  if (session.user.role === "admin") router.push("/admin");
+  else if (session.user.role === "restaurant") router.push("/restaurant");
+  else if (session.user.role === "middleman") router.push("/middleman");
+  else router.push("/user");
+};
+
 
   return (
     <div className="h-screen w-full flex items-center justify-center bg-[#FFF9F5] p-4 overflow-hidden font-sans">
       <div className="bg-white w-full max-w-5xl h-full max-h-[650px] rounded-[3rem] shadow-2xl shadow-orange-100 flex overflow-hidden p-6 gap-8">
-
         {/* Left Side */}
         <div className="w-full lg:w-1/2 flex flex-col justify-center px-6 lg:px-12">
           <div className="text-center mb-10">
@@ -34,8 +61,10 @@ export default function LoginPage() {
               Hungry? Login to start your 10-minute countdown.
             </p>
           </div>
-{/* onSubmit={handleLogin} */}
-          <form  className="space-y-4">
+
+
+          {/* onSubmit={handleLogin} */}
+          <form  onSubmit={handleLogin} className="space-y-4">
             <input
               type="text"
               name="username"
@@ -76,17 +105,27 @@ export default function LoginPage() {
 
           <div className="relative flex py-8 items-center">
             <div className="flex-grow border-t border-gray-100"></div>
-            <span className="flex-shrink mx-4 text-gray-400 text-[10px] font-bold uppercase tracking-widest">or login with</span>
+            <span className="flex-shrink mx-4 text-gray-400 text-[10px] font-bold uppercase tracking-widest">
+              or login with
+            </span>
             <div className="flex-grow border-t border-gray-100"></div>
           </div>
 
           <div className="flex gap-4">
             <button className="flex-1 py-3 border border-gray-200 rounded-full flex items-center justify-center gap-2 text-xs font-bold hover:bg-orange-50 hover:border-orange-200 transition-all">
-              <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" className="w-4 h-4" alt="Google" />
+              <img
+                src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
+                className="w-4 h-4"
+                alt="Google"
+              />
               Google
             </button>
             <button className="flex-1 py-3 border border-gray-200 rounded-full flex items-center justify-center gap-2 text-xs font-bold hover:bg-orange-50 hover:border-orange-200 transition-all">
-              <img src="https://upload.wikimedia.org/wikipedia/commons/b/b8/2021_Facebook_icon.svg" className="w-4 h-4" alt="Facebook" />
+              <img
+                src="https://upload.wikimedia.org/wikipedia/commons/b/b8/2021_Facebook_icon.svg"
+                className="w-4 h-4"
+                alt="Facebook"
+              />
               Facebook
             </button>
           </div>

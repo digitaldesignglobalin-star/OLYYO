@@ -2,17 +2,17 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { useAuth } from "@/context/AuthContext.old";
+// import { useAuth } from "@/context/AuthContext.old";
 
 export default function RegisterPage() {
-  const { register } = useAuth();
+  // const { register } = useAuth();
 
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
-  const handleRegister = (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
 
     if (password !== confirmPassword) {
@@ -20,18 +20,36 @@ export default function RegisterPage() {
       return;
     }
 
-    register({
-      username,
-      email,
-      password,
-      confirmPassword,
-    });
+    try {
+      const res = await fetch("/api/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          username,
+          email,
+          password,
+          confirmPassword,
+          role: "user", // 👈 IMPORTANT
+        }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        alert(data.message || "Registration failed");
+        return;
+      }
+
+      alert("Account created successfully!");
+      window.location.href = "/login";
+    } catch (err) {
+      alert("Something went wrong");
+    }
   };
 
   return (
     <div className="h-screen w-full flex items-center justify-center bg-[#FFF9F5] p-4 overflow-hidden font-sans">
       <div className="bg-white w-full max-w-5xl h-full max-h-[650px] rounded-[3rem] shadow-2xl shadow-orange-100 flex overflow-hidden p-6 gap-8 flex-row-reverse">
-
         {/* Left Side (Form Side) */}
         <div className="w-full lg:w-1/2 flex flex-col justify-center px-6 lg:px-12">
           <div className="text-center mb-6">
@@ -40,9 +58,7 @@ export default function RegisterPage() {
             </h1>
             <p className="text-gray-500 text-sm">
               Experience the fastest delivery in{" "}
-              <span className="text-orange-600 font-black italic">
-                10 mins
-              </span>
+              <span className="text-orange-600 font-black italic">10 mins</span>
               .
             </p>
           </div>

@@ -13,7 +13,9 @@ import {
   X,
   Home,
 } from "lucide-react";
+import { signOut } from "next-auth/react";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
 
 export default function RestaurantSidebar({
   activeTab,
@@ -59,6 +61,14 @@ export default function RestaurantSidebar({
       count: "23",
     },
   ];
+
+  const { data: session } = useSession();
+
+  const handleLogout = async () => {
+    if (confirm("Are you sure you want to logout?")) {
+      await signOut({ callbackUrl: "/restaurant/login" });
+    }
+  };
 
   return (
     <>
@@ -148,21 +158,25 @@ export default function RestaurantSidebar({
           </div>
         </div>
 
-        {/* Restaurant Info */}
+        {/* Restaurant Info */} 
         <div className="h-20 border-t border-gray-800 flex items-center px-4">
           <div className="flex items-center space-x-3 w-full">
             <div className="w-10 h-10 bg-gradient-to-r from-orange-500 to-red-500 rounded-full flex items-center justify-center">
               <ChefHat className="w-5 h-5 text-white" />
             </div>
-            <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium text-white truncate">
-                Pizza Palace
-              </p>
-              <p className="text-xs text-gray-500 truncate">pizza@olyyo.com</p>
-            </div>
-            <Link href="/" className="p-2 hover:bg-gray-800 rounded-lg">
+            <p className="text-sm font-medium text-white truncate">
+              {session?.user?.name}
+            </p>
+            <p className="text-xs text-gray-500 truncate">
+              {session?.user?.email}
+            </p>
+
+            <button
+              onClick={handleLogout}
+              className="p-2 hover:bg-gray-800 rounded-lg transition-colors"
+            >
               <LogOut className="w-5 h-5 text-gray-400" />
-            </Link>
+            </button>
           </div>
         </div>
 

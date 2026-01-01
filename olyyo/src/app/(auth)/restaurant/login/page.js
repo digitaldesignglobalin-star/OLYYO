@@ -6,22 +6,36 @@ import Link from "next/link";
 import Image from "next/image";
 import logoImage from "../../../../../public/olyyo-logo.png";
 // import { useAuth } from "@/context/AuthContext";
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 export default function RestaurantLogin() {
-  const [username, setUsername] = useState(""); // ✅ FIXED
+  // const [username, setUsername] = useState("");
+  // const [password, setPassword] = useState("");
+
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
   const [showPassword, setShowPassword] = useState(false);
 
-  // const { login } = useAuth();
+  const router = useRouter();
 
-  // const handleLogin = (e) => {
-  //   e.preventDefault();
+  const handleLogin = async (e) => {
+    e.preventDefault();
 
-  //   login({
-  //     username, // ✅ CORRECT VALUE
-  //     password,
-  //   });
-  // };
+    const res = await signIn("credentials", {
+      username: email, // 👈 MUST BE EMAIL
+      password,
+      redirect: false,
+    });
+
+    if (!res || res.error) {
+      alert("Invalid credentials");
+      return;
+    }
+
+    router.push("/restaurant");
+  };
 
   return (
     <div className="min-h-screen w-full flex flex-col items-center justify-center relative bg-[#0a0c18] overflow-hidden">
@@ -41,16 +55,16 @@ export default function RestaurantLogin() {
           <h2 className="text-2xl font-bold text-white text-center mb-8">
             Restaurant Login
           </h2>
-{/* onSubmit={handleLogin} */}
-          <form  className="space-y-5">
+          {/* onSubmit={handleLogin} */}
+          <form onSubmit={handleLogin} className="space-y-5">
             {/* USERNAME */}
             <div className="relative">
               <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500" />
               <input
                 type="text"
-                placeholder="Restaurant Username"
-                value={username}
-                // onChange={(e) => setUsername(e.target.value)}
+                placeholder="Restaurant Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 className="w-full bg-[#0f172a]/50 border border-white/10 rounded-2xl py-4 pl-12 text-white"
                 required
               />
@@ -63,13 +77,13 @@ export default function RestaurantLogin() {
                 type={showPassword ? "text" : "password"}
                 placeholder="Password"
                 value={password}
-                // onChange={(e) => setPassword(e.target.value)}
+                onChange={(e) => setPassword(e.target.value)}
                 className="w-full bg-[#0f172a]/50 border border-white/10 rounded-2xl py-4 pl-12 pr-12 text-white"
                 required
               />
               <button
                 type="button"
-                // onClick={() => setShowPassword(!showPassword)}
+                onClick={() => setShowPassword(!showPassword)}
                 className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500"
               >
                 {showPassword ? <EyeOff /> : <Eye />}
