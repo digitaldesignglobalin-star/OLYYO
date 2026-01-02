@@ -15,6 +15,7 @@ import {
   Home,
 } from "lucide-react";
 import Link from "next/link";
+import { useSession, signOut } from "next-auth/react";
 
 export default function MiddlemanSidebar({
   activeTab,
@@ -60,6 +61,15 @@ export default function MiddlemanSidebar({
       count: null,
     },
   ];
+
+  const { data: session } = useSession();
+  const handleLogout = async () => {
+  if (confirm("Are you sure you want to logout?")) {
+    await signOut({ callbackUrl: "/middleman/login" });
+  }
+};
+
+
 
   return (
     <>
@@ -160,15 +170,20 @@ export default function MiddlemanSidebar({
             </div>
             <div className="flex-1 min-w-0">
               <p className="text-sm font-medium text-white truncate">
-                John Coordinator
+                {/* {session?.user?.name} */}
+                {session?.user?.name || "Middleman"}
               </p>
               <p className="text-xs text-gray-500 truncate">
-                middleman@olyyo.com
+                {/* {session?.user?.email} */}
+                {session?.user?.email || "—"}
               </p>
             </div>
-            <Link href="/" className="p-2 hover:bg-gray-800 rounded-lg">
+            <button
+              onClick={handleLogout}
+              className="p-2 hover:bg-gray-800 rounded-lg transition-colors"
+            >
               <LogOut className="w-5 h-5 text-gray-400" />
-            </Link>
+            </button>
           </div>
         </div>
 

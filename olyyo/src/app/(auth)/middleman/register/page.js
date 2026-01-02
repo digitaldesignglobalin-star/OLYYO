@@ -2,7 +2,16 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Lock, Mail, Eye, EyeOff, ArrowRight, User, ShieldCheck, Phone } from "lucide-react";
+import {
+  Lock,
+  Mail,
+  Eye,
+  EyeOff,
+  ArrowRight,
+  User,
+  ShieldCheck,
+  Phone,
+} from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import logoImage from "../../../../../public/olyyo-logo.png";
@@ -23,7 +32,7 @@ export default function MiddlemanRegister() {
     setIsLoading(true);
 
     try {
-      const res = await fetch("http://localhost:2000/api/auth/middleman/register", {
+      const res = await fetch("/api/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -31,6 +40,7 @@ export default function MiddlemanRegister() {
           email,
           password,
           confirmPassword,
+          role: "middleman",
         }),
       });
 
@@ -58,7 +68,13 @@ export default function MiddlemanRegister() {
       <div className="relative z-10 w-full max-w-[550px] px-4">
         <div className="absolute -top-12 left-1/2 -translate-x-1/2 z-30">
           <div className="w-24 h-24 rounded-full bg-[#0d1117] border-[3px] border-emerald-500/40 flex flex-col items-center justify-center shadow-lg backdrop-blur-md p-3">
-            <Image src={logoImage} alt="Olyyo" width={60} height={20} className="object-contain" />
+            <Image
+              src={logoImage}
+              alt="Olyyo"
+              width={60}
+              height={20}
+              className="object-contain"
+            />
             <span className="text-emerald-400 text-[8px] uppercase tracking-widest mt-1 font-bold">
               Middleman
             </span>
@@ -114,7 +130,9 @@ export default function MiddlemanRegister() {
               disabled={isLoading}
               className="w-full bg-gradient-to-r from-emerald-500 to-green-600 text-white font-bold py-3.5 rounded-xl flex items-center justify-center space-x-3 hover:brightness-110 transition-all"
             >
-              <span>{isLoading ? "Registering..." : "Register as Middleman"}</span>
+              <span>
+                {isLoading ? "Registering..." : "Register as Middleman"}
+              </span>
               <ArrowRight size={16} />
             </button>
           </form>
@@ -122,7 +140,10 @@ export default function MiddlemanRegister() {
           <div className="mt-6 text-center">
             <p className="text-gray-400 text-xs">
               Already managing orders?
-              <Link href="/middleman/login" className="text-emerald-500 font-bold hover:underline ml-1">
+              <Link
+                href="/middleman/login"
+                className="text-emerald-500 font-bold hover:underline ml-1"
+              >
                 Login here
               </Link>
             </p>
