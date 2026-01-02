@@ -20,7 +20,7 @@ import {
   Store as StoreIcon,
 } from "lucide-react";
 import Link from "next/link";
-import { signOut } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 
 // Animated Sidebar Component
 export default function AdminSidebar({
@@ -80,11 +80,17 @@ export default function AdminSidebar({
     },
   ];
 
+  const { data: session } = useSession();
+
   const handleLogout = async () => {
-    await signOut({
-      callbackUrl: "/admin/login",
-    });
+    if (confirm("Are you sure you want to logout?")) {
+      await signOut({ callbackUrl: "/admin/login" });
+    }
   };
+
+  // await signOut({
+  //   callbackUrl: "/admin/login",
+  // });
 
   return (
     <>
@@ -215,8 +221,8 @@ export default function AdminSidebar({
               </div>
             </div>
             <div className="flex-1">
-              <p className="text-sm font-medium text-white">Super Admin</p>
-              <p className="text-xs text-gray-500">admin@olyyo.com</p>
+              <p className="text-sm font-medium text-white">{session?.user?.name}</p>
+              <p className="text-xs text-gray-500">{session?.user?.email}</p>
             </div>
             <button
               onClick={handleLogout}

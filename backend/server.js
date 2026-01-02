@@ -1,42 +1,35 @@
 import express from "express";
-import mongoose from "mongoose";
+import cors from "cors";
 import dotenv from "dotenv";
-import userRouter from "./routes/auth.user.routes.js"
-import corsMiddleware from "./middleware/cors.js";
-import adminRouter from "./routes/auth.admin.routes.js";
-import middlemanAuthRouter from "./routes/auth.middleman.routes.js";
-import restaurantAuthRouter from "./routes/auth.restaurant.routes.js";
+import connectDB from "./Config/db.js";
+import restaurantRoutes from "./Routes/restaurantRoutes.js";
 
 
 dotenv.config();
 
 const app = express();
 
-app.use(corsMiddleware);
+
+app.use(express.json());
+app.use("/api/restaurants", restaurantRoutes);
+
+
+
+// Connect DB
+connectDB();
+
+// Middleware
+app.use(cors({
+  origin: "http://localhost:3000",
+  credentials: true
+}));
 app.use(express.json());
 
-// USER + DELIVERY
-app.use("/api/auth", userRouter);
-// ADMIN 
-app.use("/api/auth/admin", adminRouter);
-// RESTAURANT
-app.use("/api/auth/restaurant", restaurantAuthRouter);
-//MIDDLEMAN
-app.use("/api/auth/middleman", middlemanAuthRouter);
+app.get("/", (req, res) => {
+  res.send("OLYYO Backend is running 🚀");
+});
 
-
-const PORT = process.env.PORT || 2000;
-const MONGO_URI = process.env.MONGO_URI;
-
-mongoose
-  .connect(
-    MONGO_URI,
-    {
-      dbName: "Olyyo_db",
-    }
-  )
-  .then(() => console.log("MongoDB connected"))
-  .catch((err) => console.log(err));
-
-
-app.listen(PORT, () => console.log(`server is running on port: ${PORT}`));
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+  console.log(`Backend running on http://localhost:${PORT}`);
+});
