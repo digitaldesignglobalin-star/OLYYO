@@ -21,33 +21,32 @@ export default function RestaurantLogin() {
   const router = useRouter();
 
   const handleLogin = async (e) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  const res = await signIn("credentials", {
-    username: email,
-    password,
-    redirect: false,
-  });
+    const res = await signIn("credentials", {
+      username: email,
+      password,
+      redirect: false,
+    });
 
-  if (!res || res.error) {
-    alert("Invalid credentials");
-    return;
-  }
+    if (!res || res.error) {
+      alert("Invalid credentials");
+      return;
+    }
 
-  // 🔥 CREATE RESTAURANT PROFILE (BACKEND STEP)
-  await fetch("/api/restaurants/profile", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      name: "My Restaurant",   // temporary, can improve later
-      email: email,
-    }),
-  });
+    // 🔥 CREATE RESTAURANT PROFILE (BACKEND STEP)
+    await fetch("/api/restaurants/profile", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        name: "My Restaurant", // temporary, can improve later
+        email: email,
+      }),
+    });
 
-  // ✅ NOW GO TO DASHBOARD
-  router.push("/restaurant");
-};
-
+    // ✅ NOW GO TO DASHBOARD
+    router.push("/restaurant");
+  };
 
   return (
     <div className="min-h-screen w-full flex flex-col items-center justify-center relative bg-[#0a0c18] overflow-hidden">

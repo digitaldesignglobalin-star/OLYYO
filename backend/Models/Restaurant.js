@@ -2,10 +2,16 @@ import mongoose from "mongoose";
 
 const restaurantSchema = new mongoose.Schema(
   {
-    name: { type: String, required: true },
-    email: { type: String, required: true },
+    name: {
+      type: String,
+      required: true,
+    },
 
-    // link to user
+    email: {
+      type: String,
+      required: true,
+    },
+
     owner: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",

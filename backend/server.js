@@ -3,28 +3,31 @@ import cors from "cors";
 import dotenv from "dotenv";
 import connectDB from "./Config/db.js";
 import restaurantRoutes from "./Routes/restaurantRoutes.js";
+import orderRoutes from "./Routes/orderRoutes.js";
 
 
 dotenv.config();
 
 const app = express();
 
-
-app.use(express.json());
-app.use("/api/restaurants", restaurantRoutes);
-
-
-
-// Connect DB
-connectDB();
-
-// Middleware
+// ✅ Middleware FIRST
 app.use(cors({
   origin: "http://localhost:3000",
-  credentials: true
+  credentials: true,
 }));
+
 app.use(express.json());
 
+// ✅ Routes
+app.use("/api/restaurants", restaurantRoutes);
+// orderRoutes
+app.use("/api/orders", orderRoutes);
+
+
+// ✅ DB Connection
+connectDB();
+
+// Health check
 app.get("/", (req, res) => {
   res.send("OLYYO Backend is running 🚀");
 });
