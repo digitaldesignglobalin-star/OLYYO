@@ -4,6 +4,13 @@ import dotenv from "dotenv";
 import connectDB from "./Config/db.js";
 import restaurantRoutes from "./Routes/restaurantRoutes.js";
 import orderRoutes from "./Routes/orderRoutes.js";
+import dishRoutes from "./Routes/dishRoutes.js";
+// import userRoutes from "./Routes/userRoutes.js";
+
+
+
+
+
 
 
 dotenv.config();
@@ -22,6 +29,11 @@ app.use(express.json());
 app.use("/api/restaurants", restaurantRoutes);
 // orderRoutes
 app.use("/api/orders", orderRoutes);
+// dishRoutes
+app.use("/api/dishes", dishRoutes);
+// user routes 
+// app.use("/api/users", userRoutes);
+
 
 
 // ✅ DB Connection

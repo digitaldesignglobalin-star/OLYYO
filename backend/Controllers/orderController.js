@@ -1,118 +1,89 @@
 import Order from "../Models/Order.js";
-import User from "../Models/User.js";
+import Restaurant from "../Models/Restaurant.js";
+import Dish from "../Models/Dish.js";
+import mongoose from "mongoose";
 
-
-
-
+/**
+ * CREATE ORDER
+ * POST /api/orders
+ */
 export const createOrder = async (req, res) => {
   try {
-    const { userId, items, totalAmount } = req.body;
+    const { restaurantId, items, totalPrice } = req.body;
 
-    if (!userId || !items || !totalAmount) {
-      return res.status(400).json({ message: "Missing order data" });
+    if (!restaurantId || !items || !totalPrice) {
+      return res.status(400).json({ message: "Missing required fields" });
     }
 
-    // Get user
-    const user = await User.findById(userId);
-
-    if (!user || !user.restaurantId) {
-      return res.status(400).json({ message: "Restaurant not linked to user" });
+    if (!mongoose.Types.ObjectId.isValid(restaurantId)) {
+      return res.status(400).json({ message: "Invalid restaurant ID" });
     }
 
-    // Create order
+    const restaurant = await Restaurant.findById(restaurantId);
+    if (!restaurant) {
+      return res.status(404).json({ message: "Restaurant not found" });
+    }
+
     const order = await Order.create({
-      user: userId,
-      restaurant: user.restaurantId,
+      restaurant: restaurantId,
       items,
-      totalAmount,
+      totalPrice,
     });
 
-    res.status(201).json({
-      message: "Order placed successfully",
-      order,
-    });
+    return res.status(201).json(order);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    console.error("Create Order Error:", error);
+    return res.status(500).json({ message: error.message });
   }
 };
 
-
-
-// Fetches all orders for that restaurant
+/**
+ * GET ORDERS OF A RESTAURANT
+ * GET /api/orders/restaurant/:restaurantId
+ */
 export const getRestaurantOrders = async (req, res) => {
   try {
-    const { userId } = req.params;
+    const { restaurantId } = req.params;
 
-    // Find the user
-    const user = await User.findById(userId);
-
-    if (!user || !user.restaurantId) {
-      return res
-        .status(400)
-        .json({ message: "Restaurant not linked to user" });
+    if (!mongoose.Types.ObjectId.isValid(restaurantId)) {
+      return res.status(400).json({ message: "Invalid restaurant ID" });
     }
 
-    // Find orders for this restaurant
-    const orders = await Order.find({
-      restaurant: user.restaurantId,
-    }).sort({ createdAt: -1 });
+    const orders = await Order.find({ restaurant: restaurantId })
+      .populate("items.dish", "name category price")
+      .sort({ createdAt: -1 });
 
-    res.json(orders);
+    return res.json(orders);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    console.error("Get Orders Error:", error);
+    return res.status(500).json({ message: error.message });
   }
 };
 
-
-// explaination  : 
-// What this does (plain words)
-// Takes user ID
-// Finds which restaurant belongs to that user
-// Fetches all orders for that restaurant
-// Sends them back
-
-
-
-
-
-
-
-// Update order status
+/**
+ * UPDATE ORDER STATUS
+ * PATCH /api/orders/:orderId/status
+ */
 export const updateOrderStatus = async (req, res) => {
   try {
     const { orderId } = req.params;
     const { status } = req.body;
 
-    // Allowed status values
-    const allowedStatus = [
-      "pending",
-      "preparing",
-      "ready",
-      "delivered",
-      "cancelled",
-    ];
-
-    if (!allowedStatus.includes(status)) {
-      return res.status(400).json({ message: "Invalid order status" });
+    if (!mongoose.Types.ObjectId.isValid(orderId)) {
+      return res.status(400).json({ message: "Invalid order ID" });
     }
 
-    // Find and update order
-    const order = await Order.findByIdAndUpdate(
-      orderId,
-      { status },
-      { new: true }
-    );
-
+    const order = await Order.findById(orderId);
     if (!order) {
       return res.status(404).json({ message: "Order not found" });
     }
 
-    res.json({
-      message: "Order status updated",
-      order,
-    });
+    order.status = status;
+    await order.save();
+
+    return res.json(order);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    console.error("Update Order Error:", error);
+    return res.status(500).json({ message: error.message });
   }
 };
-

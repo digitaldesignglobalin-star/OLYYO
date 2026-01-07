@@ -1,9 +1,12 @@
 import express from "express";
-import { createRestaurantProfile } from "../Controllers/restaurantController.js";
+import {
+  createRestaurant,
+  getAllRestaurants,
+} from "../Controllers/restaurantController.js";
 
 const router = express.Router();
 
-// Create restaurant profile
-router.post("/profile", createRestaurantProfile);
+router.post("/", createRestaurant);
+router.get("/", getAllRestaurants);
 
 export default router;

@@ -7,13 +7,8 @@ import {
 
 const router = express.Router();
 
-// Create order
 router.post("/", createOrder);
-
-// Get orders for restaurant
-router.get("/restaurant/:userId", getRestaurantOrders);
-
-// Update order status
+router.get("/restaurant/:restaurantId", getRestaurantOrders);
 router.patch("/:orderId/status", updateOrderStatus);
 
 export default router;

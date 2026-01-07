@@ -6,16 +6,15 @@ const restaurantSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-
     email: {
       type: String,
       required: true,
     },
-
-    owner: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
-      required: true,
+    phone: String,
+    address: String,
+    isOpen: {
+      type: Boolean,
+      default: true,
     },
   },
   { timestamps: true }

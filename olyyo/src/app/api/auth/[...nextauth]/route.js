@@ -1,73 +1,62 @@
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import bcrypt from "bcryptjs";
-import { connectDB } from "@/lib/mongodb";
-import User from "@/models/User.js";
-
 
 export const authOptions = {
   providers: [
     CredentialsProvider({
       name: "Credentials",
       credentials: {
-        username: { label: "Email", type: "text" },
-        password: { label: "Password", type: "password" },
+        email: {},
+        password: {},
       },
-
       async authorize(credentials) {
-        if (!credentials?.username || !credentials?.password) {
-          return null;
-        }
-
-        await connectDB();
-
-        const user = await User.findOne({
-          email: credentials.username,
+        // 🔹 Call your backend login API
+        const res = await fetch("http://localhost:5000/api/auth/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(credentials),
         });
 
-        if (!user) return null;
+        const user = await res.json();
 
-        const isValid = await bcrypt.compare(
-          credentials.password,
-          user.password
-        );
+        if (!res.ok) return null;
 
-        if (!isValid) return null;
-
+        // ⚠️ VERY IMPORTANT: return restaurantId here
         return {
-          id: user._id.toString(),
+          id: user._id,
           name: user.name,
           email: user.email,
           role: user.role,
+          restaurantId: user.restaurantId, // ✅ THIS IS THE KEY
         };
       },
     }),
   ],
 
-  session: { strategy: "jwt" },
-
   callbacks: {
-    async jwt({ token, user }) {
-      if (user) {
-        token.id = user.id;
-        token.role = user.role;
-      }
-      return token;
-    },
-
-    async session({ session, token }) {
-      if (session.user) {
-        session.user.id = token.id;
-        session.user.role = token.role;
-      }
-      return session;
-    },
+  async jwt({ token, user }) {
+    if (user) {
+      token.id = user.id;
+      token.role = user.role;
+      token.restaurantId = user.restaurantId; // ✅ STORE IN TOKEN
+    }
+    return token;
   },
 
-  pages: {
-    signIn: "/login",
+  async session({ session, token }) {
+    session.user.id = token.id;
+    session.user.role = token.role;
+    session.user.restaurantId = token.restaurantId; // ✅ SEND TO UI
+    return session;
+  },
+},
+
+
+  session: {
+    strategy: "jwt",
   },
 };
 
 const handler = NextAuth(authOptions);
+
 export { handler as GET, handler as POST };
