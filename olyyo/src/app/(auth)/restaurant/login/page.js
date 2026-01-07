@@ -5,13 +5,15 @@ import { Lock, Mail, Eye, EyeOff, ArrowRight } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import logoImage from "../../../../../public/olyyo-logo.png";
-// import { useAuth } from "@/context/AuthContext";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 
 export default function RestaurantLogin() {
   // const [username, setUsername] = useState("");
   // const [password, setPassword] = useState("");
+
+  const { data: session } = useSession();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -35,12 +37,22 @@ export default function RestaurantLogin() {
     }
 
     // 🔥 CREATE RESTAURANT PROFILE (BACKEND STEP)
-    await fetch("/api/restaurants/profile", {
+    // await fetch("/api/restaurants/profile", {
+    //   method: "POST",
+    //   headers: { "Content-Type": "application/json" },
+    //   body: JSON.stringify({
+    //     name: "My Restaurant",
+    //     email: email,
+    //   }),
+    // });
+
+    await fetch("http://localhost:5000/api/restaurants", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        name: "My Restaurant", // temporary, can improve later
+        name: "My Restaurant",
         email: email,
+        userId: session.user.id, // 🔥 THIS WAS MISSING
       }),
     });
 

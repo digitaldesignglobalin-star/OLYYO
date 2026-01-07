@@ -2,23 +2,30 @@ import mongoose from "mongoose";
 
 const userSchema = new mongoose.Schema(
   {
-    name: String,
-
+    name: {
+      type: String,
+      required: true,
+    },
     email: {
       type: String,
       required: true,
       unique: true,
     },
-
+    password: {
+      type: String,
+      required: true,
+    },
     role: {
       type: String,
-      enum: ["admin", "restaurant", "middleman", "user"],
+      enum: ["admin", "restaurant", "user", "delivery"],
       default: "user",
     },
 
+    // 🔥 THIS IS THE IMPORTANT PART
     restaurantId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Restaurant",
+      default: null,
     },
   },
   { timestamps: true }

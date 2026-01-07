@@ -23,6 +23,13 @@ const UserSchema = new mongoose.Schema(
       enum: ["admin", "restaurant", "delivery", "middleman", "user"],
       default: "user",
     },
+
+    // 🔥 THIS FIELD WAS MISSING – REQUIRED
+    restaurantId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Restaurant",
+      default: null,
+    },
   },
   { timestamps: true }
 );
