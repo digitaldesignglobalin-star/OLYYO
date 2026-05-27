@@ -242,7 +242,10 @@ export default function CustomerPage() {
   useEffect(() => {
     const fetchRestaurants = async () => {
       try {
-        const res = await fetch(`${API_URL}/restaurants`);
+        // We use mock Mumbai coordinates here for testing the 5km radius feature
+        const lat = 19.0760;
+        const lng = 72.8777;
+        const res = await fetch(`${API_URL}/restaurants?lat=${lat}&lng=${lng}`);
         if (res.ok) {
           const data = await res.json();
           if (data && data.length > 0) {

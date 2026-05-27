@@ -1,9 +1,74 @@
 "use client";
-import React, { useState } from 'react';
-import { Settings, Users, Truck, Store, ShieldCheck, Activity } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Settings, Users, Truck, Store, ShieldCheck, Activity, CheckCircle, XCircle } from 'lucide-react';
+
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "https://olyyo-backend.onrender.com";
 
 export default function SuperAdminDashboard() {
   const [activeTab, setActiveTab] = useState('overview');
+  const [settings, setSettings] = useState({
+    rider_commission_percent: 10,
+    super_admin_commission_percent: 20,
+    kitchen_commission_percent: 70
+  });
+  const [stats, setStats] = useState({ users: 0, revenue: 0, pending: 0 });
+  const [pendingUsers, setPendingUsers] = useState([]);
+  
+  useEffect(() => {
+    fetchSettings();
+    fetchPendingApprovals();
+    fetchStats();
+  }, []);
+
+  const fetchSettings = async () => {
+    try {
+      const res = await fetch(`${API_URL}/settings`);
+      const data = await res.json();
+      if (data && !data.statusCode) setSettings(data);
+    } catch (e) { console.error(e); }
+  };
+
+  const fetchPendingApprovals = async () => {
+    try {
+      const res = await fetch(`${API_URL}/auth/pending`);
+      const data = await res.json();
+      if (data && Array.isArray(data)) {
+        setPendingUsers(data);
+        setStats(prev => ({ ...prev, pending: data.length }));
+      }
+    } catch (e) { console.error(e); }
+  };
+
+  const fetchStats = async () => {
+    try {
+      const res = await fetch(`${API_URL}/orders`);
+      const data = await res.json();
+      if (data && Array.isArray(data)) {
+        const revenue = data.reduce((acc, order) => acc + Number(order.super_admin_commission || 0), 0);
+        setStats(prev => ({ ...prev, revenue: revenue.toFixed(2), users: 12450 }));
+      }
+    } catch (e) { console.error(e); }
+  };
+
+  const updateSettings = async () => {
+    try {
+      await fetch(`${API_URL}/settings`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(settings)
+      });
+      alert('Settings updated successfully!');
+    } catch (e) {
+      alert('Error updating settings');
+    }
+  };
+
+  const approveUser = async (id) => {
+    try {
+      await fetch(`${API_URL}/auth/approve/${id}`, { method: 'PATCH' });
+      fetchPendingApprovals();
+    } catch (e) { console.error(e); }
+  };
 
   return (
     <div className="min-h-screen bg-slate-900 text-slate-100 font-sans selection:bg-indigo-500/30 flex">
@@ -19,9 +84,7 @@ export default function SuperAdminDashboard() {
         <nav className="flex flex-col gap-2">
           <NavItem icon={<Activity />} label="Overview" active={activeTab === 'overview'} onClick={() => setActiveTab('overview')} />
           <NavItem icon={<Settings />} label="Commissions" active={activeTab === 'commissions'} onClick={() => setActiveTab('commissions')} />
-          <NavItem icon={<Truck />} label="Rider Approvals" active={activeTab === 'riders'} onClick={() => setActiveTab('riders')} />
-          <NavItem icon={<Store />} label="Kitchen Approvals" active={activeTab === 'kitchens'} onClick={() => setActiveTab('kitchens')} />
-          <NavItem icon={<Users />} label="Admins" active={activeTab === 'admins'} onClick={() => setActiveTab('admins')} />
+          <NavItem icon={<Truck />} label="Approvals" active={activeTab === 'approvals'} onClick={() => setActiveTab('approvals')} />
         </nav>
       </aside>
 
@@ -32,18 +95,13 @@ export default function SuperAdminDashboard() {
             <h2 className="text-3xl font-semibold tracking-tight">Super Admin Dashboard</h2>
             <p className="text-slate-400 mt-1">Manage global platform settings and approvals.</p>
           </div>
-          <div className="flex items-center gap-4">
-            <button className="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-500 transition-colors rounded-lg font-medium shadow-lg shadow-indigo-600/20">
-              Generate Report
-            </button>
-          </div>
         </header>
 
         {activeTab === 'overview' && (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-            <StatCard title="Active Users" value="12,450" trend="+14%" />
-            <StatCard title="Total Revenue" value="₹1.2M" trend="+8%" />
-            <StatCard title="Pending Approvals" value="45" trend="-2%" alert />
+            <StatCard title="Total Platform Users" value={stats.users} trend="+14%" />
+            <StatCard title="Platform Revenue" value={`₹${stats.revenue}`} trend="+8%" />
+            <StatCard title="Pending Approvals" value={stats.pending} trend="-2%" alert={stats.pending > 0} />
           </div>
         )}
 
@@ -56,23 +114,51 @@ export default function SuperAdminDashboard() {
             </h3>
             
             <div className="space-y-6">
-              <CommissionRow label="Rider Commission" value="10" />
-              <CommissionRow label="Super Admin Commission" value="20" />
-              <CommissionRow label="Kitchen Commission" value="70" />
+              <CommissionRow 
+                label="Rider Commission" 
+                value={settings.rider_commission_percent} 
+                onChange={(v) => setSettings({...settings, rider_commission_percent: Number(v)})} 
+              />
+              <CommissionRow 
+                label="Super Admin Commission" 
+                value={settings.super_admin_commission_percent} 
+                onChange={(v) => setSettings({...settings, super_admin_commission_percent: Number(v)})} 
+              />
+              <CommissionRow 
+                label="Kitchen Commission" 
+                value={settings.kitchen_commission_percent} 
+                onChange={(v) => setSettings({...settings, kitchen_commission_percent: Number(v)})} 
+              />
             </div>
 
             <div className="mt-8 flex justify-end">
-              <button className="px-6 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 transition-all duration-300 rounded-xl font-medium shadow-lg shadow-indigo-600/20 hover:-translate-y-0.5">
+              <button onClick={updateSettings} className="px-6 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 transition-all duration-300 rounded-xl font-medium shadow-lg shadow-indigo-600/20 hover:-translate-y-0.5">
                 Save Changes
               </button>
             </div>
           </div>
         )}
 
-        {/* Placeholder for other tabs */}
-        {(activeTab === 'riders' || activeTab === 'kitchens' || activeTab === 'admins') && (
-          <div className="flex flex-col items-center justify-center h-64 bg-slate-800/20 border border-slate-700/50 rounded-2xl border-dashed">
-            <p className="text-slate-400 text-lg">Module in development</p>
+        {activeTab === 'approvals' && (
+          <div className="bg-slate-800/40 backdrop-blur-xl border border-slate-700/50 rounded-2xl p-8 shadow-2xl">
+            <h3 className="text-2xl font-semibold mb-6">Pending User Approvals</h3>
+            {pendingUsers.length === 0 ? (
+              <p className="text-slate-400">No pending approvals.</p>
+            ) : (
+              <div className="space-y-4">
+                {pendingUsers.map(user => (
+                  <div key={user.id} className="flex justify-between items-center p-4 bg-slate-900/50 rounded-xl border border-slate-700/30">
+                    <div>
+                      <p className="font-bold text-lg">{user.name} <span className="text-sm font-medium px-2 py-1 bg-indigo-500/20 text-indigo-300 rounded-md ml-2">{user.role}</span></p>
+                      <p className="text-sm text-slate-400">{user.phone}</p>
+                    </div>
+                    <button onClick={() => approveUser(user.id)} className="px-4 py-2 bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/30 rounded-lg font-medium flex items-center gap-2 transition-colors">
+                      <CheckCircle className="w-5 h-5" /> Approve
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         )}
 
@@ -111,14 +197,15 @@ function StatCard({ title, value, trend, alert }) {
   );
 }
 
-function CommissionRow({ label, value }) {
+function CommissionRow({ label, value, onChange }) {
   return (
     <div className="flex items-center justify-between p-4 bg-slate-900/50 rounded-xl border border-slate-700/30">
       <span className="font-medium text-slate-300">{label}</span>
       <div className="flex items-center gap-2">
         <input 
           type="number" 
-          defaultValue={value}
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
           className="w-20 bg-slate-800 border border-slate-600 rounded-lg px-3 py-2 text-center text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"
         />
         <span className="text-slate-400">%</span>
