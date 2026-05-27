@@ -18,6 +18,7 @@ create table if not exists public.users (
 
 -- Row Level Security (RLS) for Users Table
 alter table public.users enable row level security;
+drop policy if exists "Allow public access to users" on public.users;
 create policy "Allow public access to users" on public.users for all using (true);
 
 -- 2. OTP Verifications Table
@@ -29,6 +30,7 @@ create table if not exists public.otp_verifications (
 );
 
 alter table public.otp_verifications enable row level security;
+drop policy if exists "Allow public access to otp_verifications" on public.otp_verifications;
 create policy "Allow public access to otp_verifications" on public.otp_verifications for all using (true);
 
 -- 3. Restaurants Table
@@ -52,6 +54,7 @@ create table if not exists public.restaurants (
 );
 
 alter table public.restaurants enable row level security;
+drop policy if exists "Allow public access to restaurants" on public.restaurants;
 create policy "Allow public access to restaurants" on public.restaurants for all using (true);
 
 -- 4. Menu Items Table
@@ -66,6 +69,7 @@ create table if not exists public.menu_items (
 );
 
 alter table public.menu_items enable row level security;
+drop policy if exists "Allow public access to menu_items" on public.menu_items;
 create policy "Allow public access to menu_items" on public.menu_items for all using (true);
 
 -- 5. Orders Table
@@ -85,6 +89,7 @@ create table if not exists public.orders (
 );
 
 alter table public.orders enable row level security;
+drop policy if exists "Allow public access to orders" on public.orders;
 create policy "Allow public access to orders" on public.orders for all using (true);
 
 -- 6. Order Items Table
@@ -97,6 +102,7 @@ create table if not exists public.order_items (
 );
 
 alter table public.order_items enable row level security;
+drop policy if exists "Allow public access to order_items" on public.order_items;
 create policy "Allow public access to order_items" on public.order_items for all using (true);
 
 -- 7. Platform Settings Table
@@ -109,6 +115,7 @@ create table if not exists public.platform_settings (
 );
 
 alter table public.platform_settings enable row level security;
+drop policy if exists "Allow public access to platform_settings" on public.platform_settings;
 create policy "Allow public access to platform_settings" on public.platform_settings for all using (true);
 
 
