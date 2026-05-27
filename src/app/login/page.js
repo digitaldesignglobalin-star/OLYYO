@@ -4,6 +4,8 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Phone, Lock, ArrowRight, ArrowLeft, Loader2, ShieldCheck, Sparkles } from "lucide-react";
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "https://olyyo-backend.onrender.com";
+
 export default function LoginPage() {
   const router = useRouter();
   const [phoneNumber, setPhoneNumber] = useState("");
@@ -43,7 +45,7 @@ export default function LoginPage() {
 
     setLoading(true);
     try {
-      const response = await fetch("http://localhost:5000/auth/send-otp", {
+      const response = await fetch(`${API_URL}/auth/send-otp`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -77,7 +79,7 @@ export default function LoginPage() {
 
     setLoading(true);
     try {
-      const response = await fetch("http://localhost:5000/auth/verify-otp", {
+      const response = await fetch(`${API_URL}/auth/verify-otp`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -122,7 +124,7 @@ export default function LoginPage() {
     setError("");
     setLoading(true);
     try {
-      const response = await fetch("http://localhost:5000/auth/send-otp", {
+      const response = await fetch(`${API_URL}/auth/send-otp`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -3,6 +3,8 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Navbar from "@/components/home/Navbar";
+
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "https://olyyo-backend.onrender.com";
 import {
   Search,
   Star,
@@ -240,7 +242,7 @@ export default function CustomerPage() {
   useEffect(() => {
     const fetchRestaurants = async () => {
       try {
-        const res = await fetch("http://localhost:5000/restaurants");
+        const res = await fetch(`${API_URL}/restaurants`);
         if (res.ok) {
           const data = await res.json();
           if (data && data.length > 0) {
@@ -355,7 +357,7 @@ export default function CustomerPage() {
 
     try {
       // 2. Submit order to NestJS backend
-      const res = await fetch("http://localhost:5000/orders", {
+      const res = await fetch(`${API_URL}/orders`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -401,7 +403,7 @@ export default function CustomerPage() {
   const handleCancelOrder = async () => {
     if (activeOrder && activeOrder.id) {
       try {
-        await fetch(`http://localhost:5000/orders/${activeOrder.id}/status`, {
+        await fetch(`${API_URL}/orders/${activeOrder.id}/status`, {
           method: "PATCH",
           headers: {
             "Content-Type": "application/json",
