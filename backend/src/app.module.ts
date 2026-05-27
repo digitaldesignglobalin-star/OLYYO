@@ -8,6 +8,7 @@ import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { RestaurantController } from './restaurant.controller';
 import { OrderController } from './order.controller';
+import { SettingsController } from './settings.controller';
 
 @Module({
   imports: [
@@ -15,7 +16,7 @@ import { OrderController } from './order.controller';
       isGlobal: true,
     }),
   ],
-  controllers: [AppController, AuthController, RestaurantController, OrderController],
+  controllers: [AppController, AuthController, RestaurantController, OrderController, SettingsController],
   providers: [AppService, SupabaseService, SmsService, AuthService],
 })
 export class AppModule {}

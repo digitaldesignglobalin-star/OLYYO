@@ -125,4 +125,33 @@ export class AuthService {
       user: userData,
     };
   }
+
+  async getPendingUsers() {
+    const supabase = this.supabaseService.getClient();
+    const { data, error } = await supabase
+      .from('users')
+      .select('*')
+      .eq('is_approved', false)
+      .in('role', ['rider', 'kitchen']);
+
+    if (error) {
+      throw new BadRequestException('Failed to fetch pending users.');
+    }
+    return data;
+  }
+
+  async approveUser(id: string) {
+    const supabase = this.supabaseService.getClient();
+    const { data, error } = await supabase
+      .from('users')
+      .update({ is_approved: true })
+      .eq('id', id)
+      .select('*')
+      .single();
+
+    if (error) {
+      throw new BadRequestException('Failed to approve user.');
+    }
+    return data;
+  }
 }
