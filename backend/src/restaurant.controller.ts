@@ -3,6 +3,7 @@ import { SupabaseService } from './supabase.service';
 import { calculateDistance } from './utils';
 
 @Controller('restaurants')
+export class RestaurantController {
   constructor(private readonly supabaseService: SupabaseService) {}
 
   @Get()

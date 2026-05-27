@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.OrderController = void 0;
 const common_1 = require("@nestjs/common");
 const supabase_service_1 = require("./supabase.service");
+const utils_1 = require("./utils");
 let OrderController = class OrderController {
     supabaseService;
     constructor(supabaseService) {
@@ -27,6 +28,15 @@ let OrderController = class OrderController {
         }
         const supabase = this.supabaseService.getClient();
         const orderId = `OLY-${Math.floor(100000 + Math.random() * 900000)}`;
+        const { data: settings } = await supabase.from('platform_settings').select('*').single();
+        let kitchen_earnings = 0;
+        let rider_earnings = 0;
+        let super_admin_commission = 0;
+        if (settings) {
+            kitchen_earnings = totalAmount * (settings.kitchen_commission_percent / 100);
+            rider_earnings = totalAmount * (settings.rider_commission_percent / 100);
+            super_admin_commission = totalAmount * (settings.super_admin_commission_percent / 100);
+        }
         const { error: orderError } = await supabase.from('orders').insert({
             id: orderId,
             user_id: userId,
@@ -35,6 +45,9 @@ let OrderController = class OrderController {
             address,
             payment_method: paymentMethod,
             status: 'pending',
+            kitchen_earnings,
+            rider_earnings,
+            super_admin_commission
         });
         if (orderError) {
             throw new common_1.BadRequestException(`Failed to create order: ${orderError.message}`);
@@ -121,9 +134,12 @@ let OrderController = class OrderController {
     }
     async updateOrderStatus(id, body) {
         const supabase = this.supabaseService.getClient();
+        const updatePayload = { status: body.status };
+        if (body.riderId)
+            updatePayload.rider_id = body.riderId;
         const { data, error } = await supabase
             .from('orders')
-            .update({ status: body.status })
+            .update(updatePayload)
             .eq('id', id)
             .select('*')
             .single();
@@ -131,6 +147,30 @@ let OrderController = class OrderController {
             throw new common_1.BadRequestException(`Failed to update status: ${error.message}`);
         }
         return data;
+    }
+    async getAvailableOrdersForRider(riderId, lat, lng) {
+        if (!lat || !lng) {
+            throw new common_1.BadRequestException('Rider location is required.');
+        }
+        const supabase = this.supabaseService.getClient();
+        const { data: orders, error } = await supabase
+            .from('orders')
+            .select('*, restaurants(name, lat, lng)')
+            .eq('status', 'pending')
+            .is('rider_id', null);
+        if (error) {
+            throw new common_1.BadRequestException(`Failed to fetch orders: ${error.message}`);
+        }
+        const riderLat = parseFloat(lat);
+        const riderLng = parseFloat(lng);
+        const availableOrders = orders.filter(order => {
+            const rest = order.restaurants;
+            if (!rest.lat || !rest.lng)
+                return true;
+            const dist = (0, utils_1.calculateDistance)(riderLat, riderLng, parseFloat(rest.lat), parseFloat(rest.lng));
+            return dist <= 2;
+        });
+        return availableOrders;
     }
 };
 exports.OrderController = OrderController;
@@ -177,6 +217,15 @@ __decorate([
     __metadata("design:paramtypes", [String, Object]),
     __metadata("design:returntype", Promise)
 ], OrderController.prototype, "updateOrderStatus", null);
+__decorate([
+    (0, common_1.Get)('available-for-rider/:riderId'),
+    __param(0, (0, common_1.Param)('riderId')),
+    __param(1, (0, common_1.Query)('lat')),
+    __param(2, (0, common_1.Query)('lng')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, String, String]),
+    __metadata("design:returntype", Promise)
+], OrderController.prototype, "getAvailableOrdersForRider", null);
 exports.OrderController = OrderController = __decorate([
     (0, common_1.Controller)('orders'),
     __metadata("design:paramtypes", [supabase_service_1.SupabaseService])

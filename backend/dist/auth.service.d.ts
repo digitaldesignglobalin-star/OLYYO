@@ -9,7 +9,7 @@ export declare class AuthService {
         success: boolean;
         message: string;
     }>;
-    verifyOtp(phone: string, code: string): Promise<{
+    verifyOtp(phone: string, code: string, requestedRole?: string): Promise<{
         success: boolean;
         token: string;
         user: any;

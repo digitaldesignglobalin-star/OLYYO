@@ -24,7 +24,7 @@ let AuthController = class AuthController {
         return this.authService.sendOtp(body.phone);
     }
     async verifyOtp(body) {
-        return this.authService.verifyOtp(body.phone, body.code);
+        return this.authService.verifyOtp(body.phone, body.code, body.role);
     }
 };
 exports.AuthController = AuthController;

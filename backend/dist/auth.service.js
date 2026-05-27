@@ -49,7 +49,7 @@ let AuthService = AuthService_1 = class AuthService {
             message: 'OTP sent successfully.',
         };
     }
-    async verifyOtp(phone, code) {
+    async verifyOtp(phone, code, requestedRole) {
         const cleanedPhone = phone.replace(/\D/g, '');
         const supabase = this.supabaseService.getClient();
         const { data: otpData, error: otpError } = await supabase
@@ -76,11 +76,15 @@ let AuthService = AuthService_1 = class AuthService {
             .eq('phone', cleanedPhone)
             .single();
         if (userError || !userData) {
+            const allowedRoles = ['customer', 'rider', 'kitchen'];
+            const role = (requestedRole && allowedRoles.includes(requestedRole)) ? requestedRole : 'customer';
+            const is_approved = role === 'customer';
             const { data: newUser, error: createError } = await supabase
                 .from('users')
                 .insert({
                 phone: cleanedPhone,
-                role: 'customer',
+                role: role,
+                is_approved: is_approved,
                 name: `User ${cleanedPhone.substring(cleanedPhone.length - 4)}`,
             })
                 .select('*')

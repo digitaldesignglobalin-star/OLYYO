@@ -23,5 +23,7 @@ export declare class OrderController {
     getOrderById(id: string): Promise<any>;
     updateOrderStatus(id: string, body: {
         status: string;
+        riderId?: string;
     }): Promise<any>;
+    getAvailableOrdersForRider(riderId: string, lat: string, lng: string): Promise<any[]>;
 }

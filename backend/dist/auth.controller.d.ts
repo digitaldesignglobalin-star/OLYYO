@@ -11,6 +11,7 @@ export declare class AuthController {
     verifyOtp(body: {
         phone: string;
         code: string;
+        role?: string;
     }): Promise<{
         success: boolean;
         token: string;
