@@ -1,14 +1,16 @@
 import { Controller, Get, Param, Query } from '@nestjs/common';
 import { SupabaseService } from './supabase.service';
+import { calculateDistance } from './utils';
 
 @Controller('restaurants')
-export class RestaurantController {
   constructor(private readonly supabaseService: SupabaseService) {}
 
   @Get()
   async getRestaurants(
     @Query('vegOnly') vegOnly?: string,
     @Query('search') search?: string,
+    @Query('lat') lat?: string,
+    @Query('lng') lng?: string,
   ) {
     const supabase = this.supabaseService.getClient();
     let query = supabase.from('restaurants').select('*');
@@ -25,6 +27,18 @@ export class RestaurantController {
     if (error) {
       throw new Error(`Failed to fetch restaurants: ${error.message}`);
     }
+
+    if (lat && lng && data) {
+      const userLat = parseFloat(lat);
+      const userLng = parseFloat(lng);
+      
+      return data.filter(r => {
+        if (!r.lat || !r.lng) return true; // Show restaurants without coordinates for backward compatibility
+        const dist = calculateDistance(userLat, userLng, parseFloat(r.lat), parseFloat(r.lng));
+        return dist <= 5;
+      });
+    }
+
     return data;
   }
 

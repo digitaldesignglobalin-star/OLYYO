@@ -52,7 +52,7 @@ export class AuthService {
     };
   }
 
-  async verifyOtp(phone: string, code: string): Promise<{ success: boolean; token: string; user: any }> {
+  async verifyOtp(phone: string, code: string, requestedRole?: string): Promise<{ success: boolean; token: string; user: any }> {
     const cleanedPhone = phone.replace(/\D/g, '');
     const supabase = this.supabaseService.getClient();
 
@@ -93,11 +93,16 @@ export class AuthService {
 
     if (userError || !userData) {
       // Create user if not exists
+      const allowedRoles = ['customer', 'rider', 'kitchen'];
+      const role = (requestedRole && allowedRoles.includes(requestedRole)) ? requestedRole : 'customer';
+      const is_approved = role === 'customer'; // auto-approve customers
+
       const { data: newUser, error: createError } = await supabase
         .from('users')
         .insert({
           phone: cleanedPhone,
-          role: 'customer', // Default role
+          role: role,
+          is_approved: is_approved,
           name: `User ${cleanedPhone.substring(cleanedPhone.length - 4)}`,
         })
         .select('*')

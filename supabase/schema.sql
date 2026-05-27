@@ -9,7 +9,10 @@ create table if not exists public.users (
   phone text unique not null,
   name text,
   email text,
-  role text not null default 'customer', -- 'customer', 'admin', 'delivery', 'restaurant', 'middleman'
+  role text not null default 'customer', -- 'customer', 'admin', 'super_admin', 'rider', 'kitchen'
+  lat numeric(10,8),
+  lng numeric(11,8),
+  is_approved boolean default false,
   created_at timestamp with time zone default timezone('utc'::text, now()) not null
 );
 
@@ -42,6 +45,9 @@ create table if not exists public.restaurants (
   discount text,
   distance text,
   promoted boolean default false,
+  lat numeric(10,8),
+  lng numeric(11,8),
+  kitchen_admin_id uuid references public.users(id) on delete set null,
   created_at timestamp with time zone default timezone('utc'::text, now()) not null
 );
 
@@ -67,10 +73,14 @@ create table if not exists public.orders (
   id text primary key, -- Format: OLY-123456
   user_id uuid references public.users(id) on delete set null,
   restaurant_id integer references public.restaurants(id) on delete set null,
+  rider_id uuid references public.users(id) on delete set null,
   total_amount numeric(10,2) not null,
   address text not null,
   payment_method text not null,
   status text not null default 'pending', -- 'pending', 'preparing', 'out_for_delivery', 'delivered', 'cancelled'
+  kitchen_earnings numeric(10,2) default 0,
+  rider_earnings numeric(10,2) default 0,
+  super_admin_commission numeric(10,2) default 0,
   created_at timestamp with time zone default timezone('utc'::text, now()) not null
 );
 
@@ -89,10 +99,25 @@ create table if not exists public.order_items (
 alter table public.order_items enable row level security;
 create policy "Allow public access to order_items" on public.order_items for all using (true);
 
+-- 7. Platform Settings Table
+create table if not exists public.platform_settings (
+  id serial primary key,
+  rider_commission_percent numeric(5,2) not null default 10.00,
+  super_admin_commission_percent numeric(5,2) not null default 20.00,
+  kitchen_commission_percent numeric(5,2) not null default 70.00,
+  updated_at timestamp with time zone default timezone('utc'::text, now()) not null
+);
+
+alter table public.platform_settings enable row level security;
+create policy "Allow public access to platform_settings" on public.platform_settings for all using (true);
+
 
 -- ========================================================
 -- Insert Seed Data (Restaurants and Menu Items)
 -- ========================================================
+
+-- Insert Platform Settings
+insert into public.platform_settings (id, rider_commission_percent, super_admin_commission_percent, kitchen_commission_percent) values (1, 10.00, 20.00, 70.00) on conflict (id) do nothing;
 
 -- Insert Restaurants
 insert into public.restaurants (id, name, cuisines, rating, delivery_time, price_range, image_url, is_veg, tags, discount, distance, promoted) values

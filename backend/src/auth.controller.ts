@@ -13,7 +13,7 @@ export class AuthController {
 
   @Post('verify-otp')
   @HttpCode(HttpStatus.OK)
-  async verifyOtp(@Body() body: { phone: string; code: string }) {
-    return this.authService.verifyOtp(body.phone, body.code);
+  async verifyOtp(@Body() body: { phone: string; code: string; role?: string }) {
+    return this.authService.verifyOtp(body.phone, body.code, body.role);
   }
 }

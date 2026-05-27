@@ -1,5 +1,6 @@
 import { Controller, Get, Post, Patch, Body, Param, Query, BadRequestException } from '@nestjs/common';
 import { SupabaseService } from './supabase.service';
+import { calculateDistance } from './utils';
 
 @Controller('orders')
 export class OrderController {
@@ -26,6 +27,18 @@ export class OrderController {
     const supabase = this.supabaseService.getClient();
     const orderId = `OLY-${Math.floor(100000 + Math.random() * 900000)}`;
 
+    // Get platform settings for commissions
+    const { data: settings } = await supabase.from('platform_settings').select('*').single();
+    let kitchen_earnings = 0;
+    let rider_earnings = 0;
+    let super_admin_commission = 0;
+
+    if (settings) {
+      kitchen_earnings = totalAmount * (settings.kitchen_commission_percent / 100);
+      rider_earnings = totalAmount * (settings.rider_commission_percent / 100);
+      super_admin_commission = totalAmount * (settings.super_admin_commission_percent / 100);
+    }
+
     // 1. Insert order
     const { error: orderError } = await supabase.from('orders').insert({
       id: orderId,
@@ -35,6 +48,9 @@ export class OrderController {
       address,
       payment_method: paymentMethod,
       status: 'pending',
+      kitchen_earnings,
+      rider_earnings,
+      super_admin_commission
     });
 
     if (orderError) {
@@ -149,12 +165,15 @@ export class OrderController {
   @Patch(':id/status')
   async updateOrderStatus(
     @Param('id') id: string,
-    @Body() body: { status: string },
+    @Body() body: { status: string; riderId?: string },
   ) {
     const supabase = this.supabaseService.getClient();
+    const updatePayload: any = { status: body.status };
+    if (body.riderId) updatePayload.rider_id = body.riderId;
+
     const { data, error } = await supabase
       .from('orders')
-      .update({ status: body.status })
+      .update(updatePayload)
       .eq('id', id)
       .select('*')
       .single();
@@ -163,5 +182,39 @@ export class OrderController {
       throw new BadRequestException(`Failed to update status: ${error.message}`);
     }
     return data;
+  }
+
+  @Get('available-for-rider/:riderId')
+  async getAvailableOrdersForRider(
+    @Param('riderId') riderId: string,
+    @Query('lat') lat: string,
+    @Query('lng') lng: string,
+  ) {
+    if (!lat || !lng) {
+      throw new BadRequestException('Rider location is required.');
+    }
+
+    const supabase = this.supabaseService.getClient();
+    const { data: orders, error } = await supabase
+      .from('orders')
+      .select('*, restaurants(name, lat, lng)')
+      .eq('status', 'pending')
+      .is('rider_id', null);
+
+    if (error) {
+      throw new BadRequestException(`Failed to fetch orders: ${error.message}`);
+    }
+
+    const riderLat = parseFloat(lat);
+    const riderLng = parseFloat(lng);
+
+    const availableOrders = orders.filter(order => {
+      const rest = order.restaurants as any;
+      if (!rest.lat || !rest.lng) return true; // Include if location not specified for now
+      const dist = calculateDistance(riderLat, riderLng, parseFloat(rest.lat), parseFloat(rest.lng));
+      return dist <= 2; // Restaurant must be within 2km of rider
+    });
+
+    return availableOrders;
   }
 }
