@@ -86,6 +86,10 @@ export class AuthService {
           .single();
          if (createError) throw new BadRequestException(`Test user creation failed: ${createError.message}`);
          userData = newUser;
+         
+         if (testRole === 'admin') {
+           await supabase.from('restaurants').update({ kitchen_admin_id: userData.id }).eq('id', 1);
+         }
       }
       
       const token = `olyyo_token_${Buffer.from(JSON.stringify({ id: userData.id, role: userData.role, phone: userData.phone })).toString('base64')}`;
@@ -172,6 +176,20 @@ export class AuthService {
 
     if (error) {
       throw new BadRequestException('Failed to fetch pending users.');
+    }
+    return data;
+  }
+
+  async getUsersByRole(role: string) {
+    const supabase = this.supabaseService.getClient();
+    const { data, error } = await supabase
+      .from('users')
+      .select('*')
+      .eq('role', role)
+      .eq('is_approved', true);
+
+    if (error) {
+      throw new BadRequestException(`Failed to fetch ${role}s.`);
     }
     return data;
   }

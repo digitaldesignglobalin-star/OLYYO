@@ -134,6 +134,34 @@ export class OrderController {
     return data;
   }
 
+  @Get('kitchen/:adminId')
+  async getKitchenOrders(@Param('adminId') adminId: string) {
+    const supabase = this.supabaseService.getClient();
+    
+    // First find the restaurant for this admin
+    const { data: restData, error: restError } = await supabase
+      .from('restaurants')
+      .select('id')
+      .eq('kitchen_admin_id', adminId)
+      .single();
+      
+    if (restError || !restData) {
+      // Return empty if they don't have a restaurant yet
+      return [];
+    }
+
+    const { data, error } = await supabase
+      .from('orders')
+      .select('*, restaurants(name), order_items(*, menu_items(name))')
+      .eq('restaurant_id', restData.id)
+      .order('created_at', { ascending: false });
+
+    if (error) {
+      throw new BadRequestException(`Failed to fetch kitchen orders: ${error.message}`);
+    }
+    return data;
+  }
+
   @Get(':id')
   async getOrderById(@Param('id') id: string) {
     const supabase = this.supabaseService.getClient();

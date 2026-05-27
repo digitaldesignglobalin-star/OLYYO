@@ -22,6 +22,11 @@ export class AuthController {
     return this.authService.getPendingUsers();
   }
 
+  @Get('riders')
+  async getRiders() {
+    return this.authService.getUsersByRole('rider');
+  }
+
   @Patch('approve/:id')
   async approveUser(@Param('id') id: string) {
     return this.authService.approveUser(id);
